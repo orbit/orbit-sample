@@ -12,6 +12,7 @@ import io.ktor.application.install
 import io.ktor.features.ContentNegotiation
 import io.ktor.features.DefaultHeaders
 import io.ktor.http.ContentType
+import io.ktor.http.HttpStatusCode
 import io.ktor.jackson.jackson
 import io.ktor.request.receive
 import io.ktor.response.respond
@@ -19,21 +20,14 @@ import io.ktor.response.respondText
 import io.ktor.routing.get
 import io.ktor.routing.post
 import io.ktor.routing.routing
-import io.ktor.serialization.DefaultJsonConfiguration
-import io.ktor.serialization.json
 import io.ktor.server.engine.embeddedServer
 import io.ktor.server.netty.Netty
-import kotlinx.coroutines.runBlocking
 import kotlinx.serialization.Serializable
-import kotlinx.serialization.json.Json
-import orbit.client.OrbitClient
-import orbit.client.actor.createProxy
-import orbit.testClient.actors.Game
 import java.text.DateFormat
 
 class Server(
     port: Int = 8080,
-    orbitClient: OrbitClient
+    carnival: Carnival
 ) {
     init {
         embeddedServer(Netty, port) {
@@ -66,27 +60,35 @@ class Server(
                     }
                 }
 
-                post("/player/{playerId}/play") {
-                    println("request")
+                get ("/player/{playerId}") {
                     val playerId = call.parameters["playerId"]
+                    if (playerId == null) {
+                        call.respond(HttpStatusCode.BadRequest)
+                        return@get
+                    }
+                    call.respond(carnival.getPlayer(playerId))
+                }
+
+                post("/player/{playerId}/play") {
+                    val playerId = call.parameters["playerId"]
+                    if (playerId == null) {
+                        call.respond(HttpStatusCode.BadRequest)
+                        return@post
+                    }
                     val body = call.receive<PlayGameRequest>()
                     val gameId = body.game
                     println("Player ${playerId} playing gamed: ${gameId}")
 
-                    val game = orbitClient.actorFactory.createProxy<Game>(gameId)
+                    val result = carnival.playGame(gameId, playerId)
 
-                    runBlocking {
-                        val result = game.play(playerId).await()
-
-                        call.respond(
-                            PlayGameResponse(
-                                player = playerId,
-                                game = gameId,
-                                timesPlayed = result.timesPlayed,
-                                prize = result.prize
-                            )
+                    call.respond(
+                        PlayGameResponse(
+                            player = playerId,
+                            game = gameId,
+                            timesPlayed = result.timesPlayed,
+                            prize = result.reward
                         )
-                    }
+                    )
                 }
             }
         }.start()

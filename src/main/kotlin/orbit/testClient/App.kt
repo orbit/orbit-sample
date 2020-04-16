@@ -26,7 +26,9 @@ fun main() {
 
         orbitClient.start()
 
-        Server(port = 8001, orbitClient = orbitClient)
+        val carnival = Carnival(orbitClient)
+
+        Server(port = 8001, carnival = carnival)
 
 
 

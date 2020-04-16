@@ -14,7 +14,7 @@ class GameImpl : Game {
         return CompletableDeferred(
             GameResult(
                 timesPlayed = ++timesPlayed,
-                prize = "No prize"
+                reward = "No prize"
             )
         )
     }
@@ -22,5 +22,5 @@ class GameImpl : Game {
 
 data class GameResult(
     val timesPlayed: Int,
-    val prize: String
+    val reward: String
 )
