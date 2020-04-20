@@ -22,7 +22,6 @@ import io.ktor.routing.post
 import io.ktor.routing.routing
 import io.ktor.server.engine.embeddedServer
 import io.ktor.server.netty.Netty
-import kotlinx.serialization.Serializable
 import java.text.DateFormat
 
 class Server(
@@ -34,14 +33,6 @@ class Server(
             install(DefaultHeaders)
 
             install(ContentNegotiation) {
-//                json(
-//                    contentType = ContentType.Application.Json,
-//                    json = Json(
-//                        DefaultJsonConfiguration.copy(
-//                            prettyPrint = true
-//                        )
-//                    )
-//                )
                 jackson {
                     enable(SerializationFeature.INDENT_OUTPUT)
                     dateFormat = DateFormat.getDateInstance()
@@ -60,7 +51,16 @@ class Server(
                     }
                 }
 
-                get ("/player/{playerId}") {
+                get("/game/{gameId}") {
+                    val gameId = call.parameters["gameId"]
+                    if (gameId == null) {
+                        call.respond(HttpStatusCode.BadRequest)
+                        return@get
+                    }
+                    call.respond(carnival.getGame(gameId))
+                }
+
+                get("/player/{playerId}") {
                     val playerId = call.parameters["playerId"]
                     if (playerId == null) {
                         call.respond(HttpStatusCode.BadRequest)
@@ -84,7 +84,7 @@ class Server(
                     call.respond(
                         PlayGameResponse(
                             player = playerId,
-                            game = gameId,
+                            game = result.name,
                             timesPlayed = result.timesPlayed,
                             prize = result.reward
                         )
@@ -95,12 +95,10 @@ class Server(
     }
 }
 
-@Serializable
 data class PlayGameRequest(
     val game: String
 )
 
-@Serializable
 data class PlayGameResponse(
     val player: String?,
     val game: String?,

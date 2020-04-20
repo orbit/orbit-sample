@@ -1,0 +1,364 @@
+# Games and prizes care of Carnival Games for Nintendo Wii
+# https://en.wikipedia.org/wiki/Carnival_Games
+# https://gamefaqs.gamespot.com/wii/939414-carnival-games/faqs/50177
+games:
+  - id: AlleyBall
+    name: Alley Ball
+    theme: Dinosaurs
+    prizes:
+      small:
+        - Jurassic Plant
+        - Saber Claw
+        - Talisman
+        - Dino-Print
+      medium:
+        - Flyer-O-Saurus
+        - T-Rex Necklace
+        - Mr. Pinchy
+      large:
+        - Brontosaurus
+        - Stegosaurus
+      grand:
+        - T-Rex
+  - id: TestYourStrength
+    name: Test Your Strength
+    theme: Ninjas
+    prizes:
+      small:
+        - Throwing Star
+        - Fighting Fan
+        - Butterfly Sword
+        - Jade Dagger
+      medium:
+        - Pink Handled Sai
+        - Plastic Nunchuck
+        - Ninja Necklace
+      large:
+        - Crimson Ninja
+        - Black Ninja
+      grand:
+        - Shaolin
+  - id: Hoops
+    name: Hoops
+    theme: Police/Fire Depts.
+    prizes:
+      small:
+        - Whistle
+        - Fireman's Hat
+        - Toy Handcuffs
+        - Nurse Cap
+      medium:
+        - Stuffed officer
+        - Club Light
+        - Fire Extinguisher
+      large:
+        - Engine No. 9
+        - Wee-ew Wee-ew
+      grand:
+        - Rescue Copter
+  - id: CollectionPlate
+    name: Collection Plate
+    theme: Party Favors
+    prizes:
+      small:
+        - Jacks
+        - Paddle Ball
+        - Party Mask
+        - Deck-O-Cards
+      medium:
+        - Red Luft Balloon
+        - Bubbles
+        - Beach Ball
+      large:
+        - Mr. Bullhorn
+        - Zipper-Dee-Do
+      grand:
+        - Lil Squirt
+  - id: ClownSplash
+    name: Clown Splash
+    theme: Ocean Creatures
+    prizes:
+      small:
+        - Sea Horse
+        - Shell of the Ocean
+        - D-Lish the Lobster
+        - Plush Fish
+      medium:
+        - Gingis Tortus
+        - Happy Starfish
+        - Six Legged Octopus
+      large:
+        - Lu Lu
+        - Swimmy
+      grand:
+        - Sharkster
+  - id: HoleinOne
+    name: Hole in One
+    theme: Fancy items
+    prizes:
+      small:
+        - Silver Star Earrings
+        - Silver Plated Watch
+        - Heart Pendant
+        - 20CT Bling Ring
+      medium:
+        - Cool Dudes
+        - Walking Stick
+        - Silverlike Money Clip
+      large:
+        - 9 Sided Dice
+        - Cat Daddy Ride
+      grand:
+        - Goblet-O-Bling
+  - id: RingToss
+    name: Ring Toss
+    theme: Medieval
+    prizes:
+      small:
+        - Magical Unicorn
+        - Battle Helm
+        - King David's Banner
+        - Merlin's Wand
+      medium:
+        - Stuffed Monk
+        - Easton's Castle
+        - Toy Bow
+      large:
+        - Puffy
+        - Dragon Slayer
+      grand:
+        - Good Knight
+  - id: KaPow
+    name: Ka-pow
+    theme: Vehicles
+    prizes:
+      small:
+        - Toy Plane
+        - Electro-Spin
+        - Cucumber Car
+        - Mini Racer
+      medium:
+        - Paper Boat
+        - Toy Hybrid
+        - Ol' Jalopy
+      large:
+        - Choo Choo
+        - The Baron
+      grand:
+        - Mr. Tubbs
+  - id: SpilledMilk
+    name: Spilled Milk
+    theme: Pirate items
+    prizes:
+      small:
+        - Pirate Pin
+        - Cannon
+        - Skull Neckpiece
+        - Golden Dubloons
+      medium:
+        - Pirate Chest
+        - Jolly Roger
+        - Anchors Away
+      large:
+        - Polly
+        - Pirate Ship
+      grand:
+        - Skully One-Eye
+  - id: FrogLeap
+    name: Frog Leap
+    theme: Construction
+    prizes:
+      small:
+        - Moe Scooper
+        - Tiny Dumper
+        - Mixer Truck
+        - Front Loader
+      medium:
+        - Old Yeller
+        - Ditch Digger
+        - Combine
+      large:
+        - Wrex
+        - Big Dumper
+      grand:
+        - Forklift
+  - id: BalloonDarts
+    name: Balloon Darts
+    theme: Clowns
+    prizes:
+      small:
+        - Painted Face
+        - Honk'N Horn
+        - Disguise
+        - Clown's Sock
+      medium:
+        - Clown Doll
+        - Squirting Flower
+        - Goofball Award
+      large:
+        - Pop-N-Shout
+        - Dizzy Larry
+      grand:
+        - Roll'N On Dub
+  - id: BowlerCoaster
+    name: Bowler Coaster
+    theme: Tropical Animals
+    prizes:
+      small:
+        - Now-N-Later Gator
+        - Bunch-O-Bananas
+        - Scary Totem
+        - Binoculars
+      medium:
+        - Wild Mule
+        - Elephant
+        - Squacker
+      large:
+        - King of the Jungle
+        - Drive-U-Bananas
+      grand:
+        - Goldie
+  - id: NervesOSteel
+    name: Nerves-O-Steel
+    theme: Farm animals
+    prizes:
+      small:
+        - Piggy Bank
+        - Bo-Sheep
+        - Good Look'N Chick
+        - Tom
+      medium:
+        - Fuzzy Bunny
+        - Mallard
+        - Whinny
+      large:
+        - Old Betsy
+        - Rooster
+      grand:
+        - Sit Rover Sit
+  - id: LuckyCups
+    name: Lucky Cups
+    theme: Robots
+    prizes:
+      small:
+        - The Seafth 1000
+        - Ball Bot
+        - Square Bot
+        - Rat Bot
+      medium:
+        - Pogo Bot
+        - The Seafth 2000
+        - L08 L337
+      large:
+        - Row-Bot
+        - Domo Arigato
+      grand:
+        - Colozzle
+  - id: DayAtTheRaces
+    name: Day at the Races
+    theme: Instruments
+    prizes:
+      small:
+        - Pan's Flute
+        - Violin
+        - J12 Tune Maker
+        - Hippy Drum
+      medium:
+        - Mrs. Microphone
+        - Horn of Plenty
+        - Maracas'
+      large:
+        - Captain Piano
+        - Drum
+      grand:
+        - Blues Blower
+  - id: DunkTank
+    name: Dunk Tank
+    theme: Outer Space
+    prizes:
+      small:
+        - Space Breather
+        - Odd Martian
+        - Mini-Zap
+        - Go Shuttle
+      medium:
+        - Grayman Syndrome
+        - Octo Looker
+        - Old Greenie
+      large:
+        - Spaceship Trouble
+        - Disco Alien
+      grand:
+        - Moon Ship
+  - id: ShootingGallery
+    name: Shooting Gallery
+    theme: Animals
+    prizes:
+      small:
+        - Giant Panda
+        - Marmet
+        - Tiger Cub
+        - Snake Thang
+      medium:
+        - Sancho
+        - K-Walla
+        - Emperor P
+      large:
+        - Rapp'N G-Rafe
+        - Flying Bear
+      grand:
+        - Berry
+  - id: PigskinPass
+    name: Pigskin Pass
+    theme: Military
+    prizes:
+      small:
+        - Dud Skud
+        - Armyman
+        - T1
+        - Carrier
+      medium:
+        - War Chopper
+        - Plastic Grenade
+        - Atv
+      large:
+        - Jet
+        - Tank
+      grand:
+        - SS Rosemary
+  - id: ShootForTheStars
+    name: Shoot for the Stars
+    theme: Sports
+    prizes:
+      small:
+        - Football
+        - Basketball
+        - Ping Pong Set
+        - Mini-Bowling
+      medium:
+        - Baseball
+        - Red Golden Gloves
+        - Hockey
+      large:
+        - Skateboard
+        - Flying Disk
+      grand:
+        - Nice Comeback
+  - id: BucketsOfFun
+    name: Buckets of Fun
+    theme: Monsters
+    prizes:
+      small:
+        - Monster Purse
+        - Luxnor
+        - Joseama
+        - Occular
+      medium:
+        - Diabloie
+        - Rabbidus
+        - Dragon Spawn
+      large:
+        - Ugly Buggly
+        - Squeen Eye
+      grand:
+        - Frogenstein

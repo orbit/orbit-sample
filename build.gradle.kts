@@ -38,6 +38,7 @@ dependencies {
     "implementation"("io.ktor:ktor-jackson:$ktorVersion")
     "implementation"("io.ktor:ktor-serialization:$ktorVersion")
     "implementation"("com.fasterxml.jackson.datatype:jackson-datatype-jsr310:$jacksonVersion")
+    "implementation"("com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:$jacksonVersion")
 
     "implementation"("cloud.orbit:orbit-client:$orbitVersion")
 
