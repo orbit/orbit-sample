@@ -3,22 +3,14 @@ package orbit.testClient
 import orbit.client.OrbitClient
 import orbit.client.actor.createProxy
 import orbit.testClient.actors.Game
+import orbit.testClient.actors.PlayedGameResult
 import orbit.testClient.actors.Player
 
 class Carnival(val orbit: OrbitClient) {
-    suspend fun playGame(gameId: String, playerId: String): PlayGameResult {
-//        val game = orbit.actorFactory.createProxy<Game>(gameId)
+    suspend fun playGame(gameId: String, playerId: String): PlayedGameResult {
         val player = orbit.actorFactory.createProxy<Player>(playerId)
 
-        val gameResult = player.playGame(gameId).await()
-
-        return PlayGameResult(
-            gameId = gameId,
-            playerId = playerId,
-            name = gameResult.name,
-            reward = gameResult.reward,
-            timesPlayed = gameResult.timesPlayed
-        )
+        return player.playGame(gameId).await()
     }
 
     suspend fun getPlayer(playerId: String): PlayerResult {
@@ -41,15 +33,6 @@ class Carnival(val orbit: OrbitClient) {
         )
     }
 }
-
-data class PlayGameResult(
-    val gameId: String,
-    val name: String,
-    val playerId: String,
-    val reward: String,
-    val timesPlayed: Int
-)
-
 
 data class GameResult(
     val gameId: String,

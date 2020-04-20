@@ -22,6 +22,7 @@ import io.ktor.routing.post
 import io.ktor.routing.routing
 import io.ktor.server.engine.embeddedServer
 import io.ktor.server.netty.Netty
+import orbit.testClient.actors.GameImpl
 import java.text.DateFormat
 
 class Server(
@@ -46,9 +47,7 @@ class Server(
                 }
 
                 get("/games") {
-                    call.respondText(contentType = ContentType.Text.Plain) {
-                        "Games"
-                    }
+                    call.respond(GameImpl.catalog.games)
                 }
 
                 get("/game/{gameId}") {
@@ -81,14 +80,7 @@ class Server(
 
                     val result = carnival.playGame(gameId, playerId)
 
-                    call.respond(
-                        PlayGameResponse(
-                            player = playerId,
-                            game = result.name,
-                            timesPlayed = result.timesPlayed,
-                            prize = result.reward
-                        )
-                    )
+                    call.respond(result)
                 }
             }
         }.start()
@@ -97,11 +89,4 @@ class Server(
 
 data class PlayGameRequest(
     val game: String
-)
-
-data class PlayGameResponse(
-    val player: String?,
-    val game: String?,
-    val timesPlayed: Int,
-    val prize: String? = "Nothing"
 )

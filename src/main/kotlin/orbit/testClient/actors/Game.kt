@@ -10,6 +10,7 @@ import orbit.client.addressable.AbstractAddressable
 import orbit.client.addressable.OnActivate
 import orbit.shared.addressable.Key
 import java.io.File
+import kotlin.random.Random
 
 interface Game : ActorWithStringKey {
     fun play(playerId: String): Deferred<PlayedGameResult>
@@ -17,21 +18,18 @@ interface Game : ActorWithStringKey {
 }
 
 class GameImpl : AbstractAddressable(), Game {
-    var timesPlayed = 0
-
     private lateinit var gameData: Catalog.Game
+
+    private val baseWinningOdds = .5
+
+    private var results = mutableListOf<PlayedGameResult>()
 
     @OnActivate
     fun onActivate(): Deferred<Unit> {
-        val game = catalog.games.firstOrNull() { game ->
-            game.id == (this.context.reference.key as Key.StringKey).key
-        }
+        gameData = catalog.games.firstOrNull() { game ->
+            game.id == (context.reference.key as Key.StringKey).key
+        } ?: throw IllegalArgumentException("Game does not exist")
 
-        if (game == null) {
-            throw IllegalArgumentException("Game does not exist")
-        }
-
-        gameData = game
         return CompletableDeferred(Unit)
     }
 
@@ -46,20 +44,41 @@ class GameImpl : AbstractAddressable(), Game {
     }
 
     override fun play(playerId: String): Deferred<PlayedGameResult> {
-        return CompletableDeferred(
-            PlayedGameResult(
-                name = this.gameData.name,
-                timesPlayed = ++timesPlayed,
-                reward = "Ninja Necklace"
-            )
+
+        val previousResult = this.results.lastOrNull()
+        val replay = previousResult?.playerId == playerId && previousResult?.level < 4
+        var level = if (replay) previousResult!!.level else 0
+
+        val win = Random.nextDouble() < (baseWinningOdds / (level + 1))
+        if (win) level++
+
+        val prize = if (win)
+            (when (level) {
+                1 -> gameData.prizes.small
+                2 -> gameData.prizes.medium
+                3 -> gameData.prizes.large
+                4 -> gameData.prizes.grand
+                else -> listOf()
+            }).random() else ""
+
+        val result = PlayedGameResult(
+            name = this.gameData.name,
+            playerId = playerId,
+            winner = win,
+            reward = prize,
+            level = level
         )
+
+        results.add(result)
+
+        return CompletableDeferred(result)
     }
 
     override fun getData(): Deferred<GameData> {
         return CompletableDeferred(
             GameData(
                 name = this.gameData.name,
-                timesPlayed = this.timesPlayed
+                timesPlayed = this.results.count()
             )
         )
     }
@@ -88,6 +107,8 @@ data class GameData(
 
 data class PlayedGameResult(
     val name: String,
-    val timesPlayed: Int,
+    val playerId: String,
+    val winner: Boolean,
+    val level: Int,
     val reward: String
 )
