@@ -20,7 +20,8 @@ fun main() {
         val orbitClient = OrbitClient(
             OrbitClientConfig(
                 namespace = "carnival",
-                packages = listOf("orbit.testClient.actors")
+                packages = listOf("orbit.testClient.actors"),
+                grpcEndpoint = "dns:///orbit-test-server:50056/"
             )
         )
 

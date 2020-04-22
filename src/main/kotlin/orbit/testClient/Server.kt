@@ -11,6 +11,7 @@ import io.ktor.application.call
 import io.ktor.application.install
 import io.ktor.features.ContentNegotiation
 import io.ktor.features.DefaultHeaders
+import io.ktor.features.StatusPages
 import io.ktor.http.ContentType
 import io.ktor.http.HttpStatusCode
 import io.ktor.jackson.jackson
@@ -38,6 +39,13 @@ class Server(
                     enable(SerializationFeature.INDENT_OUTPUT)
                     dateFormat = DateFormat.getDateInstance()
                     deactivateDefaultTyping()
+                }
+            }
+
+            install(StatusPages) {
+                exception<Throwable> { cause ->
+                    println("Exception: ${cause}")
+                    call.respond(HttpStatusCode.InternalServerError)
                 }
             }
 
@@ -76,7 +84,7 @@ class Server(
                     }
                     val body = call.receive<PlayGameRequest>()
                     val gameId = body.game
-                    println("Player ${playerId} playing gamed: ${gameId}")
+                    println("Player ${playerId} playing game: ${gameId}")
 
                     val result = carnival.playGame(gameId, playerId)
 

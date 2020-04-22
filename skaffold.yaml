@@ -1,0 +1,28 @@
+apiVersion: skaffold/v2beta2
+kind: Config
+metadata:
+  name: orbit-test-client
+build:
+  artifacts:
+  - image: orbit-test
+    context: .
+    docker:
+      dockerfile: docker/Dockerfile
+deploy:
+  kubectl:
+    manifests:
+    - k8s-pod.yml
+  helm:
+    releases:
+    - name: orbit-test
+      chartPath: charts/orbit-test
+      skipBuildDependencies: true
+      setValues:
+        enabled: true
+        url: orbit-test
+#portForward:
+#- resourceType: Deployment
+#  port: 8001
+#  resourceName: orbit-test-client
+
+

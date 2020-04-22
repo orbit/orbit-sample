@@ -1,0 +1,6 @@
+dependencies:
+- name: orbit
+  repository: https://www.orbit.cloud/orbit
+  version: 2.0.0-alpha.60
+digest: sha256:9c1d7468c278b801a5704ee36e3b1f279ca690668637cc55ce4e20df1ac8f8ae
+generated: "2020-04-21T15:19:42.554286-07:00"

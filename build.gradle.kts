@@ -9,10 +9,11 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 val kotlinCoroutinesVersion by extra("1.3.5")
 val ktorVersion by extra("1.3.2")
-val javalinVersion by extra("3.8.0")
-val jacksonVersion by extra("2.9.8")
+val jacksonVersion by extra("2.10.3")
 val orbitVersion by extra("2.0.0-alpha.60")
 val grpcVersion by extra("1.28.1")
+
+val mainClass = "orbit.testClient.AppKt"
 
 plugins {
     val kotlinVersion = "1.3.72"
@@ -61,4 +62,22 @@ compileKotlin.kotlinOptions {
 val compileTestKotlin: KotlinCompile by tasks
 compileTestKotlin.kotlinOptions {
     jvmTarget = "1.8"
+}
+
+val fatJar = task("fatJar", type = Jar::class) {
+    archiveClassifier.set("release")
+    archiveVersion.set("")
+
+    manifest {
+        attributes["Implementation-Version"] = project.version
+        attributes["Main-Class"] = mainClass
+    }
+    from(configurations.runtimeClasspath.get().map {
+        if (it.isDirectory) {
+            it
+        } else {
+            zipTree(it)
+        }
+    })
+    with(tasks["jar"] as CopySpec)
 }

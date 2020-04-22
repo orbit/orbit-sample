@@ -1,0 +1,20 @@
+# Default values for charts.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+imagePullSecrets: []
+nameOverride: ""
+fullnameOverride: ""
+
+resources: {}
+
+orbit:
+  enabled: true
+  url: localhost
+  node:
+    replicas: 1
+    containerPort: 50056
+  addressableDirectory:
+    replicas: 0
+  nodeDirectory:
+    replicas: 0
