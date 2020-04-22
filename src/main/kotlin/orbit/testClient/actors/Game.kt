@@ -9,7 +9,6 @@ import orbit.client.actor.ActorWithStringKey
 import orbit.client.addressable.AbstractAddressable
 import orbit.client.addressable.OnActivate
 import orbit.shared.addressable.Key
-import java.io.File
 import kotlin.random.Random
 
 interface Game : ActorWithStringKey {
@@ -38,8 +37,8 @@ class GameImpl : AbstractAddressable(), Game {
         var catalog: Catalog
 
         init {
-            var gamesFile = "src/main/resources/games.yml"
-            catalog = ObjectMapper(YAMLFactory()).readValue(File(gamesFile))
+            val catalogContent = this::class.java.getResource("/games.yml").readText()
+            catalog = ObjectMapper(YAMLFactory()).readValue(catalogContent)
         }
     }
 

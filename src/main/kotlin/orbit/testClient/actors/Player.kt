@@ -26,8 +26,9 @@ class PlayerImpl : AbstractAddressable(), Player {
         val game = this@PlayerImpl.context.client.actorFactory.createProxy<Game>(gameId)
 
         val result = game.play(playerId).await()
-
-        this@PlayerImpl.rewards.add(result.reward)
+        if (result.winner) {
+            this@PlayerImpl.rewards.add(result.reward)
+        }
         return@async result
     }
 }
