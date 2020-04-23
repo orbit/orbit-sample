@@ -20,7 +20,9 @@ spec:
           ports:
           - name: http
             containerPort: 8001
-
+          env:
+          - name: ORBIT_URL
+            value: "dns:///orbit-test-server:50056/"
 ---
 apiVersion: v1
 kind: Service

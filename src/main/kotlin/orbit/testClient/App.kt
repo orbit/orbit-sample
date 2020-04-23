@@ -21,8 +21,7 @@ fun main() {
             OrbitClientConfig(
                 namespace = "carnival",
                 packages = listOf("orbit.testClient.actors"),
-//                grpcEndpoint = "dns:///localhost:50056/"
-                grpcEndpoint = "dns:///orbit-test-server:50056/"
+                grpcEndpoint = System.getenv("ORBIT_URL") ?: "dns:///localhost:50056/"
             )
         )
 
