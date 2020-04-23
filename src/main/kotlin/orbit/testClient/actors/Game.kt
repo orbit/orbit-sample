@@ -45,7 +45,7 @@ class GameImpl : AbstractAddressable(), Game {
     override fun play(playerId: String): Deferred<PlayedGameResult> {
 
         val previousResult = this.results.lastOrNull()
-        val replay = previousResult?.playerId == playerId && previousResult?.level < 4
+        val replay = previousResult?.playerId == playerId && previousResult.level < 4
         var level = if (replay) previousResult!!.level else 0
 
         val win = Random.nextDouble() < (baseWinningOdds / (level + 1))
@@ -65,6 +65,13 @@ class GameImpl : AbstractAddressable(), Game {
             playerId = playerId,
             winner = win,
             reward = prize,
+            prizeLevel = if (win) (when (level) {
+                1 -> "small"
+                2 -> "medium"
+                3 -> "large"
+                4 -> "grand"
+                else -> ""
+            }) else "",
             level = level
         )
 
@@ -109,5 +116,6 @@ data class PlayedGameResult(
     val playerId: String,
     val winner: Boolean,
     val level: Int,
+    val prizeLevel: String,
     val reward: String
 )
