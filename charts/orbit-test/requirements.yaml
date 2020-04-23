@@ -1,5 +1,5 @@
 dependencies:
   - name: orbit
-    version: 2.0.0-alpha.60
+    version: 2.0.0-alpha.61
     repository: https://www.orbit.cloud/orbit
     condition: enabled

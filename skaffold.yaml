@@ -20,9 +20,3 @@ deploy:
       setValues:
         enabled: true
         url: orbit-test
-#portForward:
-#- resourceType: Deployment
-#  port: 8001
-#  resourceName: orbit-test-client
-
-

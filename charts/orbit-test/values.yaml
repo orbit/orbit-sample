@@ -15,6 +15,6 @@ orbit:
     replicas: 1
     containerPort: 50056
   addressableDirectory:
-    replicas: 0
+    replicas: 1
   nodeDirectory:
-    replicas: 0
+    replicas: 1
