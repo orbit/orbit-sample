@@ -9,6 +9,7 @@ import orbit.client.actor.ActorWithStringKey
 import orbit.client.addressable.AbstractAddressable
 import orbit.client.addressable.OnActivate
 import orbit.shared.addressable.Key
+import orbit.testClient.actors.repository.GameStore
 import kotlin.random.Random
 
 interface Game : ActorWithStringKey {
@@ -16,7 +17,7 @@ interface Game : ActorWithStringKey {
     fun getData(): Deferred<GameData>
 }
 
-class GameImpl : AbstractAddressable(), Game {
+class GameImpl(private val gameStore: GameStore) : AbstractAddressable(), Game {
     private lateinit var gameData: Catalog.Game
 
     private val baseWinningOdds = .5

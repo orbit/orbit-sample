@@ -10,6 +10,16 @@ import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.time.delay
 import orbit.client.OrbitClient
 import orbit.client.OrbitClientConfig
+import orbit.client.addressable.Addressable
+import orbit.client.addressable.AddressableConstructor
+import orbit.testClient.actors.GameImpl
+import orbit.testClient.actors.PlayerImpl
+import orbit.testClient.actors.repository.GameStore
+import orbit.testClient.actors.repository.PlayerStore
+import orbit.testClient.actors.repository.local.LocalGameStore
+import orbit.testClient.actors.repository.local.LocalPlayerStore
+import orbit.util.di.ComponentContainer
+import orbit.util.di.ExternallyConfigured
 import java.time.Duration
 
 
@@ -17,11 +27,23 @@ fun main() {
     runBlocking {
         delay(Duration.ofSeconds(5))
 
+        val gameStore = LocalGameStore()
+        val playerStore = LocalPlayerStore()
+
         val orbitClient = OrbitClient(
             OrbitClientConfig(
                 namespace = "carnival",
                 packages = listOf("orbit.testClient.actors"),
-                grpcEndpoint = System.getenv("ORBIT_URL") ?: "dns:///localhost:50056/"
+                grpcEndpoint = System.getenv("ORBIT_URL") ?: "dns:///localhost:50056/",
+                addressableTTL = Duration.ofSeconds(10),
+                addressableConstructor = RepositoryAddressableConstructor.RepositoryAddressableConstructorSingleton,
+                containerOverrides = {
+                    instance<GameStore>(gameStore)
+                    instance<PlayerStore>(playerStore)
+
+                    definition<PlayerImpl>()
+                    definition<GameImpl>()
+                }
             )
         )
 
@@ -31,8 +53,16 @@ fun main() {
 
         Server(port = 8001, carnival = carnival)
 
+        println("Test Client Started")
+    }
+}
 
+class RepositoryAddressableConstructor(private val container: ComponentContainer) : AddressableConstructor {
+    object RepositoryAddressableConstructorSingleton : ExternallyConfigured<AddressableConstructor> {
+        override val instanceType = RepositoryAddressableConstructor::class.java
+    }
 
-        println("started")
+    override fun constructAddressable(clazz: Class<out Addressable>): Addressable {
+        return container.resolve(clazz)
     }
 }
