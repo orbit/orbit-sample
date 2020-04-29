@@ -22,7 +22,6 @@ import orbit.util.di.ComponentContainer
 import orbit.util.di.ExternallyConfigured
 import java.time.Duration
 
-
 fun main() {
     runBlocking {
         delay(Duration.ofSeconds(5))

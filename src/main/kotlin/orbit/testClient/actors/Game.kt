@@ -3,11 +3,14 @@ package orbit.testClient.actors
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory
 import com.fasterxml.jackson.module.kotlin.readValue
-import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.Deferred
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.async
 import orbit.client.actor.ActorWithStringKey
 import orbit.client.addressable.AbstractAddressable
+import orbit.client.addressable.DeactivationReason
 import orbit.client.addressable.OnActivate
+import orbit.client.addressable.OnDeactivate
 import orbit.shared.addressable.Key
 import orbit.testClient.actors.repository.GameStore
 import kotlin.random.Random
@@ -18,6 +21,8 @@ interface Game : ActorWithStringKey {
 }
 
 class GameImpl(private val gameStore: GameStore) : AbstractAddressable(), Game {
+    private val key: String get() = (this.context.reference.key as Key.StringKey).key
+
     private lateinit var gameData: Catalog.Game
 
     private val baseWinningOdds = .5
@@ -25,12 +30,30 @@ class GameImpl(private val gameStore: GameStore) : AbstractAddressable(), Game {
     private var results = mutableListOf<PlayedGameResult>()
 
     @OnActivate
-    fun onActivate(): Deferred<Unit> {
+    fun onActivate(): Deferred<Unit> = GlobalScope.async {
+        println("Activating game ${key}")
+        load()
+    }
+
+    @OnDeactivate
+    fun onDeactivate(deactivationReason: DeactivationReason): Deferred<Unit> = GlobalScope.async {
+        println("Deactivating game ${key} because ${deactivationReason}")
+
+        save()
+    }
+
+    suspend fun load() {
         gameData = catalog.games.firstOrNull() { game ->
             game.id == (context.reference.key as Key.StringKey).key
         } ?: throw IllegalArgumentException("Game does not exist")
 
-        return CompletableDeferred(Unit)
+        val savedGame = gameStore.get(key)
+
+        this.results = savedGame?.results ?: mutableListOf()
+    }
+
+    suspend fun save() {
+        gameStore.put(key, this)
     }
 
     companion object {
@@ -43,9 +66,9 @@ class GameImpl(private val gameStore: GameStore) : AbstractAddressable(), Game {
         }
     }
 
-    override fun play(playerId: String): Deferred<PlayedGameResult> {
+    override fun play(playerId: String): Deferred<PlayedGameResult> = GlobalScope.async {
 
-        val previousResult = this.results.lastOrNull()
+        val previousResult = results.lastOrNull()
         val replay = previousResult?.playerId == playerId && previousResult.level < 4
         var level = if (replay) previousResult!!.level else 0
 
@@ -62,7 +85,7 @@ class GameImpl(private val gameStore: GameStore) : AbstractAddressable(), Game {
             }).random() else ""
 
         val result = PlayedGameResult(
-            name = this.gameData.name,
+            name = gameData.name,
             playerId = playerId,
             winner = win,
             reward = prize,
@@ -78,15 +101,15 @@ class GameImpl(private val gameStore: GameStore) : AbstractAddressable(), Game {
 
         results.add(result)
 
-        return CompletableDeferred(result)
+        save()
+        return@async result
     }
 
-    override fun getData(): Deferred<GameData> {
-        return CompletableDeferred(
-            GameData(
-                name = this.gameData.name,
-                timesPlayed = this.results.count()
-            )
+
+    override fun getData(): Deferred<GameData> = GlobalScope.async {
+        GameData(
+            name = gameData.name,
+            timesPlayed = results.count()
         )
     }
 }

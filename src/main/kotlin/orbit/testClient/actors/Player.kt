@@ -1,6 +1,8 @@
 package orbit.testClient.actors
 
-import kotlinx.coroutines.*
+import kotlinx.coroutines.Deferred
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.async
 import orbit.client.actor.ActorWithStringKey
 import orbit.client.actor.createProxy
 import orbit.client.addressable.AbstractAddressable
@@ -18,35 +20,33 @@ interface Player : ActorWithStringKey {
 class PlayerImpl(private val playerStore: PlayerStore) : AbstractAddressable(), Player {
     private lateinit var rewards: MutableList<String>
 
+    private val key: String get() = (this.context.reference.key as Key.StringKey).key
+
     @OnActivate
-    fun onActivate(): Deferred<Unit> {
-        val deferred = CompletableDeferred<Unit>()
+    fun onActivate(): Deferred<Unit> = GlobalScope.async {
+        println("Activating player ${key}")
 
-        val key = (this.context.reference.key as Key.StringKey).key
-        GlobalScope.launch {
-
-            val loadedPlayer = playerStore.get(key)
-
-            rewards = when {
-                loadedPlayer != null -> loadedPlayer.rewards
-                else -> mutableListOf()
-            }
-
-            deferred.complete(Unit)
-        }
-
-        return deferred
+        load()
     }
 
     @OnDeactivate
-    fun onDeactivate(deactivationReason: DeactivationReason): Deferred<Unit> {
-        println("Deactivating actor ${this.context.reference.key} because ${deactivationReason}")
-
-        return CompletableDeferred(Unit)
+    fun onDeactivate(deactivationReason: DeactivationReason): Deferred<Unit> = GlobalScope.async {
+        println("Deactivating player ${key} because ${deactivationReason}")
+        save()
     }
 
-    override fun getData(): Deferred<PlayerData> {
-        return CompletableDeferred(PlayerData(rewards = this.rewards))
+    private suspend fun load() {
+        val loadedPlayer = playerStore.get(key)
+
+        rewards = loadedPlayer?.rewards ?: mutableListOf()
+    }
+
+    private suspend fun save() {
+        playerStore.put(key, this)
+    }
+
+    override fun getData(): Deferred<PlayerData>  = GlobalScope.async {
+        return@async PlayerData(rewards = rewards)
     }
 
     override fun playGame(gameId: String): Deferred<PlayedGameResult> = GlobalScope.async {
@@ -57,6 +57,9 @@ class PlayerImpl(private val playerStore: PlayerStore) : AbstractAddressable(), 
         if (result.winner) {
             this@PlayerImpl.rewards.add(result.reward)
         }
+
+        save()
+
         return@async result
     }
 }
