@@ -9,9 +9,7 @@ import kotlinx.coroutines.future.await
 import orbit.testClient.actors.repository.PlayerRecord
 import orbit.testClient.actors.repository.PlayerStore
 
-class EtcdPlayerStore(
-    val url: String = System.getenv("STORE_ADDRESS") ?: "http://localhost:2379"
-) : PlayerStore {
+class EtcdPlayerStore(url: String) : PlayerStore {
 
     val mapper = jacksonObjectMapper()
     val keyPrefix = "game"

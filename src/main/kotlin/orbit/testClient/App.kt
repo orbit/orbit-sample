@@ -6,6 +6,17 @@
 
 package orbit.testClient
 
+import com.fasterxml.jackson.databind.SerializationFeature
+import io.ktor.application.call
+import io.ktor.application.install
+import io.ktor.features.ContentNegotiation
+import io.ktor.features.DefaultHeaders
+import io.ktor.features.StatusPages
+import io.ktor.http.HttpStatusCode
+import io.ktor.jackson.jackson
+import io.ktor.response.respond
+import io.ktor.server.engine.embeddedServer
+import io.ktor.server.netty.Netty
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.time.delay
 import orbit.client.OrbitClient
@@ -18,18 +29,19 @@ import orbit.testClient.actors.repository.GameStore
 import orbit.testClient.actors.repository.PlayerStore
 import orbit.testClient.actors.repository.etcd.EtcdGameStore
 import orbit.testClient.actors.repository.etcd.EtcdPlayerStore
+import orbit.testClient.actors.repository.local.LocalGameStore
+import orbit.testClient.actors.repository.local.LocalPlayerStore
 import orbit.util.di.ComponentContainer
 import orbit.util.di.ExternallyConfigured
+import java.text.DateFormat
 import java.time.Duration
 
 fun main() {
     runBlocking {
-        delay(Duration.ofSeconds(5))
+        val storeUrl = System.getenv("STORE_URL")
 
-//        val gameStore = LocalGameStore()
-        val gameStore = EtcdGameStore()
-//        val playerStore = LocalPlayerStore()
-        val playerStore = EtcdPlayerStore()
+        val gameStore = if (storeUrl != null) EtcdGameStore(storeUrl) else LocalGameStore()
+        val playerStore = if (storeUrl != null) EtcdPlayerStore(storeUrl) else LocalPlayerStore()
 
         val orbitClient = OrbitClient(
             OrbitClientConfig(
@@ -52,7 +64,28 @@ fun main() {
 
         val carnival = Carnival(orbitClient)
 
-        Server(port = 8001, carnival = carnival)
+        embeddedServer(Netty, 8001) {
+            install(DefaultHeaders)
+
+            install(ContentNegotiation) {
+                jackson {
+                    enable(SerializationFeature.INDENT_OUTPUT)
+                    dateFormat = DateFormat.getDateInstance()
+                    deactivateDefaultTyping()
+                }
+            }
+
+            install(StatusPages) {
+                exception<Throwable> { cause ->
+                    println("Exception: ${cause}")
+                    call.respond(HttpStatusCode.InternalServerError)
+                }
+            }
+
+            Server(carnival, this)
+            LoadServer(carnival, this)
+
+        }.start()
 
         println("Test Client Started")
     }

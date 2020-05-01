@@ -2,9 +2,7 @@ package orbit.testClient
 
 import orbit.client.OrbitClient
 import orbit.client.actor.createProxy
-import orbit.testClient.actors.Game
-import orbit.testClient.actors.PlayedGameResult
-import orbit.testClient.actors.Player
+import orbit.testClient.actors.*
 
 class Carnival(val orbit: OrbitClient) {
     suspend fun playGame(gameId: String, playerId: String): PlayedGameResult {
@@ -31,6 +29,10 @@ class Carnival(val orbit: OrbitClient) {
             name = gameData.name,
             timesPlayed = gameData.timesPlayed
         )
+    }
+
+    fun getGames(): List<Catalog.Game> {
+        return GameImpl.catalog.games
     }
 }
 
