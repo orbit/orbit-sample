@@ -28,14 +28,14 @@ class LoadServer(
                 val games = carnival.getGames()
                 val gameCount = Math.max(body.games, games.count())
 
-                for (i in 0..body.count) {
+                val results = (0..body.count).map {i ->
                     carnival.playGame(
                         games[Random.nextInt(1, gameCount)].id,
                         Random.nextInt(1, body.players).toString()
                     )
                 }
 
-                call.respond("Success")
+                call.respond(results)
             }
         }
     }
