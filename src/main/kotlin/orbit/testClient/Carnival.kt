@@ -25,7 +25,7 @@ class Carnival(val orbit: OrbitClient) {
 
     suspend fun getGame(gameId: String): GameResult {
         val game = orbit.actorFactory.createProxy<Game>(gameId)
-        val gameData = game.getData().await()
+        val gameData = game.loadData().await()
         return GameResult(
             gameId = gameId,
             name = gameData.name,

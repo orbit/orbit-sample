@@ -1,20 +1,20 @@
 package orbit.testClient.actors.repository.local
 
-import orbit.testClient.actors.PlayerImpl
+import orbit.testClient.actors.repository.PlayerRecord
 import orbit.testClient.actors.repository.PlayerStore
 
 class LocalPlayerStore : PlayerStore {
-    private val store = mutableMapOf<String, PlayerImpl>()
+    private val store = mutableMapOf<String, PlayerRecord>()
 
-    override suspend fun get(): List<PlayerImpl> {
+    override suspend fun get(): List<PlayerRecord> {
         return store.values.toList()
     }
 
-    override suspend fun get(playerId: String): PlayerImpl? {
-        return store[playerId]
+    override suspend fun get(id: String): PlayerRecord? {
+        return store[id]
     }
 
-    override suspend fun put(playerId: String, player: PlayerImpl) {
-        store[playerId] = player
+    override suspend fun put(player: PlayerRecord) {
+        store[player.id] = player
     }
 }

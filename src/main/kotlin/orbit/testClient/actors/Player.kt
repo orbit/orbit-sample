@@ -11,6 +11,7 @@ import orbit.client.addressable.OnActivate
 import orbit.client.addressable.OnDeactivate
 import orbit.shared.addressable.Key
 import orbit.testClient.actors.repository.PlayerStore
+import orbit.testClient.actors.repository.toRecord
 
 interface Player : ActorWithStringKey {
     fun getData(): Deferred<PlayerData>
@@ -18,34 +19,34 @@ interface Player : ActorWithStringKey {
 }
 
 class PlayerImpl(private val playerStore: PlayerStore) : AbstractAddressable(), Player {
-    private lateinit var rewards: MutableList<String>
+    internal lateinit var rewards: MutableList<String>
 
-    private val key: String get() = (this.context.reference.key as Key.StringKey).key
+    val id: String get() = (this.context.reference.key as Key.StringKey).key
 
     @OnActivate
     fun onActivate(): Deferred<Unit> = GlobalScope.async {
-        println("Activating player ${key}")
+        println("Activating player ${id}")
 
         load()
     }
 
     @OnDeactivate
     fun onDeactivate(deactivationReason: DeactivationReason): Deferred<Unit> = GlobalScope.async {
-        println("Deactivating player ${key} because ${deactivationReason}")
+        println("Deactivating player ${id} because ${deactivationReason}")
         save()
     }
 
     private suspend fun load() {
-        val loadedPlayer = playerStore.get(key)
+        val loadedPlayer = playerStore.get(id)
 
-        rewards = loadedPlayer?.rewards ?: mutableListOf()
+        rewards = loadedPlayer?.rewards?.toMutableList() ?: mutableListOf()
     }
 
     private suspend fun save() {
-        playerStore.put(key, this)
+        playerStore.put(this.toRecord())
     }
 
-    override fun getData(): Deferred<PlayerData>  = GlobalScope.async {
+    override fun getData(): Deferred<PlayerData> = GlobalScope.async {
         return@async PlayerData(rewards = rewards)
     }
 

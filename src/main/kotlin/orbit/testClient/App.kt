@@ -16,8 +16,8 @@ import orbit.testClient.actors.GameImpl
 import orbit.testClient.actors.PlayerImpl
 import orbit.testClient.actors.repository.GameStore
 import orbit.testClient.actors.repository.PlayerStore
-import orbit.testClient.actors.repository.local.LocalGameStore
-import orbit.testClient.actors.repository.local.LocalPlayerStore
+import orbit.testClient.actors.repository.etcd.EtcdGameStore
+import orbit.testClient.actors.repository.etcd.EtcdPlayerStore
 import orbit.util.di.ComponentContainer
 import orbit.util.di.ExternallyConfigured
 import java.time.Duration
@@ -26,8 +26,10 @@ fun main() {
     runBlocking {
         delay(Duration.ofSeconds(5))
 
-        val gameStore = LocalGameStore()
-        val playerStore = LocalPlayerStore()
+//        val gameStore = LocalGameStore()
+        val gameStore = EtcdGameStore()
+//        val playerStore = LocalPlayerStore()
+        val playerStore = EtcdPlayerStore()
 
         val orbitClient = OrbitClient(
             OrbitClientConfig(

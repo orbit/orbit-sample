@@ -10,8 +10,9 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 val kotlinCoroutinesVersion by extra("1.3.5")
 val ktorVersion by extra("1.3.2")
 val jacksonVersion by extra("2.10.3")
-val orbitVersion by extra("2.0.0-alpha.62")
+val orbitVersion by extra("2.0.0-alpha.65")
 val grpcVersion by extra("1.28.1")
+val jetcdVersion = "0.4.1"
 
 val mainClass = "orbit.testClient.AppKt"
 
@@ -46,6 +47,9 @@ dependencies {
     "implementation"("io.grpc:grpc-netty-shaded:$grpcVersion")
     "implementation"("io.grpc:grpc-protobuf:$grpcVersion")
     "implementation"("io.grpc:grpc-stub:$grpcVersion")
+
+    implementation("io.etcd:jetcd-all:$jetcdVersion")
+
 }
 
 tasks.withType<KotlinJvmCompile> {

@@ -13,31 +13,32 @@ import orbit.client.addressable.OnActivate
 import orbit.client.addressable.OnDeactivate
 import orbit.shared.addressable.Key
 import orbit.testClient.actors.repository.GameStore
+import orbit.testClient.actors.repository.toRecord
 import kotlin.random.Random
 
 interface Game : ActorWithStringKey {
     fun play(playerId: String): Deferred<PlayedGameResult>
-    fun getData(): Deferred<GameData>
+    fun loadData(): Deferred<GameData>
 }
 
 class GameImpl(private val gameStore: GameStore) : AbstractAddressable(), Game {
-    private val key: String get() = (this.context.reference.key as Key.StringKey).key
+    val id: String get() = (this.context.reference.key as Key.StringKey).key
 
     private lateinit var gameData: Catalog.Game
 
     private val baseWinningOdds = .5
 
-    private var results = mutableListOf<PlayedGameResult>()
+    internal var results = mutableListOf<PlayedGameResult>()
 
     @OnActivate
     fun onActivate(): Deferred<Unit> = GlobalScope.async {
-        println("Activating game ${key}")
+        println("Activating game ${id}")
         load()
     }
 
     @OnDeactivate
     fun onDeactivate(deactivationReason: DeactivationReason): Deferred<Unit> = GlobalScope.async {
-        println("Deactivating game ${key} because ${deactivationReason}")
+        println("Deactivating game ${id} because ${deactivationReason}")
 
         save()
     }
@@ -47,13 +48,13 @@ class GameImpl(private val gameStore: GameStore) : AbstractAddressable(), Game {
             game.id == (context.reference.key as Key.StringKey).key
         } ?: throw IllegalArgumentException("Game does not exist")
 
-        val savedGame = gameStore.get(key)
+        val savedGame = gameStore.get(id)
 
-        this.results = savedGame?.results ?: mutableListOf()
+        this.results = savedGame?.results?.toMutableList() ?: mutableListOf()
     }
 
     suspend fun save() {
-        gameStore.put(key, this)
+        gameStore.put(this.toRecord())
     }
 
     companion object {
@@ -106,7 +107,7 @@ class GameImpl(private val gameStore: GameStore) : AbstractAddressable(), Game {
     }
 
 
-    override fun getData(): Deferred<GameData> = GlobalScope.async {
+    override fun loadData(): Deferred<GameData> = GlobalScope.async {
         GameData(
             name = gameData.name,
             timesPlayed = results.count()
