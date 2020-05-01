@@ -1,0 +1,32 @@
+version: "3.7"
+services:
+  orbit-test-client:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile
+    ports:
+      - "8001:8001"
+      - "5005:5005"
+    environment:
+      ORBIT_URL: dns:///orbit-server:50056/
+      STORE_ADDRESS: "http://etcd-store:2379"
+    entrypoint: sh ./opt/orbitTest/entrypoint.sh
+    volumes:
+      - ./build/libs/orbit-test-client-release.jar:/opt/orbitTest/libs/orbit-test-client.jar
+
+  orbit-server:
+    image: orbitframework/orbit:2.0.0-alpha.65
+    ports:
+      - "5006:5005"
+    environment:
+      ORBIT_URL: "orbit-server:50056"
+      ORBIT_PORT: 50056
+
+  etcd-store:
+    image: bitnami/etcd:3
+    ports:
+      - "2379:2379"
+      - "2380:2380"
+    environment:
+      ALLOW_NONE_AUTHENTICATION: "yes"
+
