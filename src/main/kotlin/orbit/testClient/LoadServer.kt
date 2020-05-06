@@ -21,17 +21,21 @@ class LoadServer(
     init {
         application.routing {
             post("/load/play") {
+
+                // TODO: Make a more correct game. Use affinity, skip concurrency, multiple instances of games
+                //
+
                 val body = call.receive<LoadPlayRequest>()
 
-                println("Starting load test: ${body.games} games - ${body.players} players - ${body.count} times - ${body.concurrency} concurrent")
+                println("Starting load test: ${body.games} games - ${body.players} players - ${body.count} times")
 
                 val games = carnival.getGames()
-                val gameCount = Math.max(body.games, games.count())
+                val gameCount = Math.min(body.games, games.count())
 
-                val results = (0..body.count).map {i ->
+                val results = (0..body.count).map { i ->
                     carnival.playGame(
-                        games[Random.nextInt(1, gameCount)].id,
-                        Random.nextInt(1, body.players).toString()
+                        games[Random.nextInt(0, gameCount)].id,
+                        Random.nextInt(1, body.players + 1).toString()
                     )
                 }
 
@@ -45,6 +49,5 @@ data class LoadPlayRequest(
     val games: Int,
     val players: Int,
     val affinity: Int,
-    val count: Int,
-    val concurrency: Int
+    val count: Int
 )

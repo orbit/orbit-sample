@@ -25,7 +25,7 @@ class Server(
     init {
         application.routing {
             get("/") {
-                call.respondText("Cool Ok", ContentType.Text.Plain)
+                call.respondText("Ok", ContentType.Text.Plain)
             }
 
             get("/games") {

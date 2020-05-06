@@ -12,7 +12,8 @@ val ktorVersion by extra("1.3.2")
 val jacksonVersion by extra("2.10.3")
 val orbitVersion by extra("2.0.0-alpha.65")
 val grpcVersion by extra("1.28.1")
-val jetcdVersion = "0.4.1"
+val jetcdVersion by extra("0.5.0")
+val kodeinVersion by extra("6.5.5")
 
 val mainClass = "orbit.testClient.AppKt"
 
@@ -48,7 +49,8 @@ dependencies {
     "implementation"("io.grpc:grpc-protobuf:$grpcVersion")
     "implementation"("io.grpc:grpc-stub:$grpcVersion")
 
-    implementation("io.etcd:jetcd-all:$jetcdVersion")
+    "implementation"("io.etcd:jetcd-all:$jetcdVersion")
+    "implementation"("org.kodein.di:kodein-di-generic-jvm:$kodeinVersion")
 
 }
 

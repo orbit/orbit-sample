@@ -52,12 +52,14 @@ class PlayerImpl(private val playerStore: PlayerStore) : AbstractAddressable(), 
 
     override fun playGame(gameId: String): Deferred<PlayedGameResult> = GlobalScope.async {
         val playerId = (context.reference.key as Key.StringKey).key
-        val game = this@PlayerImpl.context.client.actorFactory.createProxy<Game>(gameId)
+        val game = context.client.actorFactory.createProxy<Game>(gameId)
 
         val result = game.play(playerId).await()
         if (result.winner) {
             this@PlayerImpl.rewards.add(result.reward)
         }
+
+        println("Player $id played game $gameId. Prize: ${result.reward}")
 
         save()
 

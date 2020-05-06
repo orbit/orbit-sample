@@ -18,7 +18,6 @@ import io.ktor.response.respond
 import io.ktor.server.engine.embeddedServer
 import io.ktor.server.netty.Netty
 import kotlinx.coroutines.runBlocking
-import kotlinx.coroutines.time.delay
 import orbit.client.OrbitClient
 import orbit.client.OrbitClientConfig
 import orbit.client.addressable.Addressable
@@ -31,8 +30,14 @@ import orbit.testClient.actors.repository.etcd.EtcdGameStore
 import orbit.testClient.actors.repository.etcd.EtcdPlayerStore
 import orbit.testClient.actors.repository.local.LocalGameStore
 import orbit.testClient.actors.repository.local.LocalPlayerStore
-import orbit.util.di.ComponentContainer
 import orbit.util.di.ExternallyConfigured
+import org.kodein.di.Instance
+import org.kodein.di.Kodein
+import org.kodein.di.TT
+import org.kodein.di.generic.bind
+import org.kodein.di.generic.instance
+import org.kodein.di.generic.provider
+import org.kodein.di.generic.singleton
 import java.text.DateFormat
 import java.time.Duration
 
@@ -40,8 +45,12 @@ fun main() {
     runBlocking {
         val storeUrl = System.getenv("STORE_URL")
 
-        val gameStore = if (storeUrl != null) EtcdGameStore(storeUrl) else LocalGameStore()
-        val playerStore = if (storeUrl != null) EtcdPlayerStore(storeUrl) else LocalPlayerStore()
+        val kodein = Kodein {
+            bind<GameStore>() with singleton { if (storeUrl != null) EtcdGameStore(storeUrl) else LocalGameStore() }
+            bind<PlayerStore>() with singleton { if (storeUrl != null) EtcdPlayerStore(storeUrl) else LocalPlayerStore() }
+            bind<PlayerImpl>() with provider { PlayerImpl(instance()) }
+            bind<GameImpl>() with provider { GameImpl(instance()) }
+        }
 
         val orbitClient = OrbitClient(
             OrbitClientConfig(
@@ -51,11 +60,7 @@ fun main() {
                 addressableTTL = Duration.ofSeconds(10),
                 addressableConstructor = RepositoryAddressableConstructor.RepositoryAddressableConstructorSingleton,
                 containerOverrides = {
-                    instance<GameStore>(gameStore)
-                    instance<PlayerStore>(playerStore)
-
-                    definition<PlayerImpl>()
-                    definition<GameImpl>()
+                    instance(kodein)
                 }
             )
         )
@@ -87,16 +92,26 @@ fun main() {
 
         }.start()
 
+        Runtime.getRuntime().addShutdownHook(object : Thread() {
+            override fun run() = runBlocking {
+                println("Gracefully shutting down")
+                orbitClient.stop().join()
+                println("Shutdown complete")
+            }
+        })
+
         println("Test Client Started")
     }
 }
 
-class RepositoryAddressableConstructor(private val container: ComponentContainer) : AddressableConstructor {
+class RepositoryAddressableConstructor(private val kodein: Kodein) : AddressableConstructor {
     object RepositoryAddressableConstructorSingleton : ExternallyConfigured<AddressableConstructor> {
         override val instanceType = RepositoryAddressableConstructor::class.java
     }
 
     override fun constructAddressable(clazz: Class<out Addressable>): Addressable {
-        return container.resolve(clazz)
+        val addressable: Addressable by kodein.Instance(TT(clazz))
+
+        return addressable
     }
 }
