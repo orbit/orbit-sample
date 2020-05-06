@@ -1,0 +1,10 @@
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  name: orbit-test-ingress
+  labels:
+    app: orbit-test
+spec:
+  backend:
+    serviceName: orbit-test-client
+    servicePort: 8001

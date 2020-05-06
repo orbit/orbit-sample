@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: orbit-test-client
+  labels:
+    app: orbit-test-client
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: orbit-test-client
+  template:
+    metadata:
+      labels:
+        app: orbit-test-client
+    spec:
+      containers:
+        - name: orbit-test-client
+          image: {{ .Values.image }}
+          ports:
+            - name: http
+              containerPort: 8001
+            - name: debug
+              containerPort: 5005
+          env:
+            - name: ORBIT_URL
+              value: {{ .Values.orbitUrl }}

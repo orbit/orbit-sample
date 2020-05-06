@@ -6,11 +6,15 @@ imagePullSecrets: []
 nameOverride: ""
 fullnameOverride: ""
 
+image: ""
+orbitUrl: "dns:///orbit:50056/"
+
 resources: {}
 
 orbit:
   enabled: true
   url: localhost
+  fullnameOverride: "orbit"
   node:
     replicas: 1
     containerPort: 50056

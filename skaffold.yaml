@@ -4,14 +4,11 @@ metadata:
   name: orbit-test-client
 build:
   artifacts:
-  - image: orbit-test
+  - image: orbit-test-client
     context: .
     docker:
       dockerfile: docker/Dockerfile
 deploy:
-  kubectl:
-    manifests:
-    - k8s-pod.yml
   helm:
     releases:
     - name: orbit-test
@@ -20,3 +17,5 @@ deploy:
       setValues:
         enabled: true
         url: orbit-test
+      values:
+        image: orbit-test-client

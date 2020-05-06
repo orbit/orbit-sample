@@ -52,11 +52,12 @@ fun main() {
             bind<GameImpl>() with provider { GameImpl(instance()) }
         }
 
+        val orbitUrl = System.getenv("ORBIT_URL") ?: "dns:///localhost:50056/"
         val orbitClient = OrbitClient(
             OrbitClientConfig(
                 namespace = "carnival",
                 packages = listOf("orbit.testClient.actors"),
-                grpcEndpoint = System.getenv("ORBIT_URL") ?: "dns:///localhost:50056/",
+                grpcEndpoint = orbitUrl,
                 addressableTTL = Duration.ofSeconds(10),
                 addressableConstructor = RepositoryAddressableConstructor.RepositoryAddressableConstructorSingleton,
                 containerOverrides = {
@@ -64,6 +65,8 @@ fun main() {
                 }
             )
         )
+
+        println("Connecting to Orbit at $orbitUrl")
 
         orbitClient.start()
 
