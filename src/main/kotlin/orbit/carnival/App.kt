@@ -4,7 +4,7 @@
  See license in LICENSE.
  */
 
-package orbit.testClient
+package orbit.carnival
 
 import com.fasterxml.jackson.databind.SerializationFeature
 import io.ktor.application.call
@@ -22,14 +22,14 @@ import orbit.client.OrbitClient
 import orbit.client.OrbitClientConfig
 import orbit.client.addressable.Addressable
 import orbit.client.addressable.AddressableConstructor
-import orbit.testClient.actors.GameImpl
-import orbit.testClient.actors.PlayerImpl
-import orbit.testClient.actors.repository.GameStore
-import orbit.testClient.actors.repository.PlayerStore
-import orbit.testClient.actors.repository.etcd.EtcdGameStore
-import orbit.testClient.actors.repository.etcd.EtcdPlayerStore
-import orbit.testClient.actors.repository.local.LocalGameStore
-import orbit.testClient.actors.repository.local.LocalPlayerStore
+import orbit.carnival.actors.GameImpl
+import orbit.carnival.actors.PlayerImpl
+import orbit.carnival.actors.repository.GameStore
+import orbit.carnival.actors.repository.PlayerStore
+import orbit.carnival.actors.repository.etcd.EtcdGameStore
+import orbit.carnival.actors.repository.etcd.EtcdPlayerStore
+import orbit.carnival.actors.repository.local.LocalGameStore
+import orbit.carnival.actors.repository.local.LocalPlayerStore
 import orbit.util.di.ExternallyConfigured
 import org.kodein.di.Instance
 import org.kodein.di.Kodein

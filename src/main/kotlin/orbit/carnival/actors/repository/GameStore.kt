@@ -1,7 +1,7 @@
-package orbit.testClient.actors.repository
+package orbit.carnival.actors.repository
 
-import orbit.testClient.actors.GameImpl
-import orbit.testClient.actors.PlayedGameResult
+import orbit.carnival.actors.GameImpl
+import orbit.carnival.actors.PlayedGameResult
 
 interface GameStore {
     suspend fun get(): List<GameRecord>

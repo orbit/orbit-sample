@@ -1,4 +1,4 @@
-package orbit.testClient.actors
+package orbit.carnival.actors
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory
@@ -6,14 +6,14 @@ import com.fasterxml.jackson.module.kotlin.readValue
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
+import orbit.client.actor.AbstractActor
 import orbit.client.actor.ActorWithStringKey
-import orbit.client.addressable.AbstractAddressable
 import orbit.client.addressable.DeactivationReason
 import orbit.client.addressable.OnActivate
 import orbit.client.addressable.OnDeactivate
 import orbit.shared.addressable.Key
-import orbit.testClient.actors.repository.GameStore
-import orbit.testClient.actors.repository.toRecord
+import orbit.carnival.actors.repository.GameStore
+import orbit.carnival.actors.repository.toRecord
 import kotlin.random.Random
 
 interface Game : ActorWithStringKey {
@@ -21,7 +21,7 @@ interface Game : ActorWithStringKey {
     fun loadData(): Deferred<GameData>
 }
 
-class GameImpl(private val gameStore: GameStore) : AbstractAddressable(), Game {
+class GameImpl(private val gameStore: GameStore) : AbstractActor(), Game {
     val id: String get() = (this.context.reference.key as Key.StringKey).key
 
     private lateinit var gameData: Catalog.Game

@@ -4,7 +4,7 @@
  See license in LICENSE.
  */
 
-package orbit.testClient
+package orbit.carnival
 
 import io.ktor.application.Application
 import io.ktor.application.call
@@ -16,7 +16,7 @@ import io.ktor.response.respondText
 import io.ktor.routing.get
 import io.ktor.routing.post
 import io.ktor.routing.routing
-import orbit.testClient.actors.GameImpl
+import orbit.carnival.actors.GameImpl
 
 class Server(
     carnival: Carnival,

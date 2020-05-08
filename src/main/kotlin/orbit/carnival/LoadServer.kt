@@ -4,7 +4,7 @@
  See license in LICENSE.
  */
 
-package orbit.testClient
+package orbit.carnival
 
 import io.ktor.application.Application
 import io.ktor.application.call

@@ -1,8 +1,8 @@
-package orbit.testClient
+package orbit.carnival
 
 import orbit.client.OrbitClient
 import orbit.client.actor.createProxy
-import orbit.testClient.actors.*
+import orbit.carnival.actors.*
 
 class Carnival(val orbit: OrbitClient) {
     suspend fun playGame(gameId: String, playerId: String): PlayedGameResult {

@@ -1,6 +1,6 @@
-package orbit.testClient.actors.repository
+package orbit.carnival.actors.repository
 
-import orbit.testClient.actors.PlayerImpl
+import orbit.carnival.actors.PlayerImpl
 
 interface PlayerStore {
     suspend fun get(): List<PlayerRecord>

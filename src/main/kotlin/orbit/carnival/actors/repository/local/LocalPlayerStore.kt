@@ -1,7 +1,7 @@
-package orbit.testClient.actors.repository.local
+package orbit.carnival.actors.repository.local
 
-import orbit.testClient.actors.repository.PlayerRecord
-import orbit.testClient.actors.repository.PlayerStore
+import orbit.carnival.actors.repository.PlayerRecord
+import orbit.carnival.actors.repository.PlayerStore
 
 class LocalPlayerStore : PlayerStore {
     private val store = mutableMapOf<String, PlayerRecord>()

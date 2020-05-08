@@ -1,4 +1,4 @@
-package orbit.testClient.actors.repository.etcd
+package orbit.carnival.actors.repository.etcd
 
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
@@ -6,10 +6,10 @@ import io.etcd.jetcd.ByteSequence
 import io.etcd.jetcd.Client
 import io.etcd.jetcd.options.GetOption
 import kotlinx.coroutines.future.await
-import orbit.testClient.actors.repository.PlayerRecord
-import orbit.testClient.actors.repository.PlayerStore
+import orbit.carnival.actors.repository.GameRecord
+import orbit.carnival.actors.repository.GameStore
 
-class EtcdPlayerStore(url: String) : PlayerStore {
+class EtcdGameStore(url: String) : GameStore {
 
     val mapper = jacksonObjectMapper()
     val keyPrefix = "game"
@@ -20,7 +20,7 @@ class EtcdPlayerStore(url: String) : PlayerStore {
         return ByteSequence.from("$keyPrefix/${gameId}".toByteArray())
     }
 
-    override suspend fun get(): List<PlayerRecord> {
+    override suspend fun get(): List<GameRecord> {
         val key = ByteSequence.from("\u0000".toByteArray())
 
         val option = GetOption.newBuilder()
@@ -31,18 +31,18 @@ class EtcdPlayerStore(url: String) : PlayerStore {
             .build()
 
         return client.get(key, option).await().kvs.map { game ->
-            mapper.readValue<PlayerRecord>(game.value.bytes)
+            mapper.readValue<GameRecord>(game.value.bytes)
         }
     }
 
-    override suspend fun get(id: String): PlayerRecord? {
-        val response = client.get(toKey(id)).await()
+    override suspend fun get(gameId: String): GameRecord? {
+        val response = client.get(toKey(gameId)).await()
         return response.kvs.firstOrNull()?.value?.let {
-            mapper.readValue<PlayerRecord>(it.bytes)
+            mapper.readValue<GameRecord>(it.bytes)
         }
     }
 
-    override suspend fun put(player: PlayerRecord) {
-        client.put(toKey(player.id), ByteSequence.from(mapper.writeValueAsBytes(player))).await()
+    override suspend fun put(game: GameRecord) {
+        client.put(toKey(game.id), ByteSequence.from(mapper.writeValueAsBytes(game))).await()
     }
 }

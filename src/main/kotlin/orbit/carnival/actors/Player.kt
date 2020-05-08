@@ -1,24 +1,24 @@
-package orbit.testClient.actors
+package orbit.carnival.actors
 
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
+import orbit.client.actor.AbstractActor
 import orbit.client.actor.ActorWithStringKey
 import orbit.client.actor.createProxy
-import orbit.client.addressable.AbstractAddressable
 import orbit.client.addressable.DeactivationReason
 import orbit.client.addressable.OnActivate
 import orbit.client.addressable.OnDeactivate
 import orbit.shared.addressable.Key
-import orbit.testClient.actors.repository.PlayerStore
-import orbit.testClient.actors.repository.toRecord
+import orbit.carnival.actors.repository.PlayerStore
+import orbit.carnival.actors.repository.toRecord
 
 interface Player : ActorWithStringKey {
     fun getData(): Deferred<PlayerData>
     fun playGame(gameId: String): Deferred<PlayedGameResult>
 }
 
-class PlayerImpl(private val playerStore: PlayerStore) : AbstractAddressable(), Player {
+class PlayerImpl(private val playerStore: PlayerStore) : AbstractActor(), Player {
     internal lateinit var rewards: MutableList<String>
 
     val id: String get() = (this.context.reference.key as Key.StringKey).key
