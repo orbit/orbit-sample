@@ -1,5 +1,11 @@
-apiVersion: v1
+apiVersion: v2
 appVersion: "1.0"
 description: An Orbit Test Client
 name: orbit-test
+type: application
 version: 0.1.0
+dependencies:
+- name: orbit
+  version: 2.0.0-alpha.65
+  repository: https://www.orbit.cloud/orbit
+  condition: enabled

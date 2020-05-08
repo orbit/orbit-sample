@@ -1,5 +1,0 @@
-dependencies:
-  - name: orbit
-    version: 2.0.0-alpha.65
-    repository: https://www.orbit.cloud/orbit
-    condition: enabled
