@@ -1,6 +1,6 @@
 version: "3.7"
 services:
-  orbit-test-client:
+  orbit-carnival:
     build:
       context: .
       dockerfile: docker/Dockerfile
@@ -10,9 +10,9 @@ services:
     environment:
       ORBIT_URL: dns:///orbit-server:50056/
       STORE_URL: "http://etcd-store:2379"
-    entrypoint: sh ./opt/orbitTest/entrypoint.sh
+    entrypoint: sh ./opt/orbitCarnival/entrypoint.sh
     volumes:
-      - ./build/libs/orbit-test-client-release.jar:/opt/orbitTest/libs/orbit-test-client.jar
+      - ./build/libs/orbit-carnival-release.jar:/opt/orbitCarnival/libs/orbit-carnival.jar
 
   orbit-server:
     image: orbitframework/orbit:2.0.0-alpha.65

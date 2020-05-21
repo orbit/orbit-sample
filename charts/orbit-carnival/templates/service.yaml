@@ -1,12 +1,12 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: orbit-test-client
+  name: orbit-carnival
   labels:
-    app: orbit-test-client
+    app: orbit-carnival
 spec:
   selector:
-    app: orbit-test-client
+    app: orbit-carnival
   ports:
     - name: http
       port: 8001

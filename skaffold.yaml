@@ -1,21 +1,21 @@
 apiVersion: skaffold/v2beta2
 kind: Config
 metadata:
-  name: orbit-test-client
+  name: orbit-carnival
 build:
   artifacts:
-  - image: orbit-test-client
+  - image: orbit-carnival
     context: .
     docker:
       dockerfile: docker/Dockerfile
 deploy:
   helm:
     releases:
-    - name: orbit-test
-      chartPath: charts/orbit-test
+    - name: orbit-carnival
+      chartPath: charts/orbit-carnival
       skipBuildDependencies: true
       setValues:
         enabled: true
-        url: orbit-test
+        url: orbit-carnival
       values:
-        image: orbit-test-client
+        image: orbit-carnival

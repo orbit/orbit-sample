@@ -1,8 +1,8 @@
 FROM azul/zulu-openjdk-alpine:11
 
-ADD build/libs/orbit-test-client-release.jar /opt/orbitTest/libs/orbit-test-client.jar
-ADD docker/entrypoint.sh /opt/orbitTest/
+ADD build/libs/orbit-carnival-release.jar /opt/orbitCarnival/libs/orbit-carnival.jar
+ADD docker/entrypoint.sh /opt/orbitCarnival/
 
-RUN ["chmod", "+x", "/opt/orbitTest/entrypoint.sh"]
+RUN ["chmod", "+x", "/opt/orbitCarnival/entrypoint.sh"]
 
-CMD ["/opt/orbitTest/entrypoint.sh"]
+CMD ["/opt/orbitCarnival/entrypoint.sh"]

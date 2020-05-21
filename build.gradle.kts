@@ -15,7 +15,7 @@ val grpcVersion by extra("1.28.1")
 val jetcdVersion by extra("0.5.0")
 val kodeinVersion by extra("6.5.5")
 
-val mainClass = "orbit.testClient.AppKt"
+val mainClass = "orbit.carnival.AppKt"
 
 plugins {
     val kotlinVersion = "1.3.72"

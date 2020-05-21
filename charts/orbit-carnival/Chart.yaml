@@ -1,7 +1,7 @@
 apiVersion: v2
 appVersion: "1.0"
-description: An Orbit Test Client
-name: orbit-test
+description: An Orbit Sample app
+name: orbit-carnival
 type: application
 version: 0.1.0
 dependencies:

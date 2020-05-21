@@ -1,22 +1,22 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: orbit-test-client
+  name: orbit-carnival
   labels:
-    app: orbit-test-client
+    app: orbit-carnival
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: orbit-test-client
+      app: orbit-carnival
   template:
     metadata:
       labels:
-        app: orbit-test-client
+        app: orbit-carnival
     spec:
       containers:
-        - name: orbit-test-client
-          image: orbit-test
+        - name: orbit-carnival
+          image: orbit-carnival
           ports:
           - name: http
             containerPort: 8001
@@ -27,12 +27,12 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: orbit-test-client
+  name: orbit-carnival
   labels:
-    app: orbit-test-client
+    app: orbit-carnival
 spec:
   selector:
-    app: orbit-test-client
+    app: orbit-carnival
   ports:
   - name: http
     port: 8001
@@ -42,10 +42,10 @@ spec:
 apiVersion: networking.k8s.io/v1beta1
 kind: Ingress
 metadata:
-  name: orbit-test-ingress
+  name: orbit-carnival-ingress
   labels:
-    app: orbit-test
+    app: orbit-carnival
 spec:
   backend:
-    serviceName: orbit-test-client
+    serviceName: orbit-carnival
     servicePort: 8001

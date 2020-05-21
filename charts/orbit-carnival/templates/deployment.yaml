@@ -1,21 +1,21 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: orbit-test-client
+  name: orbit-carnival
   labels:
-    app: orbit-test-client
+    app: orbit-carnival
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: orbit-test-client
+      app: orbit-carnival
   template:
     metadata:
       labels:
-        app: orbit-test-client
+        app: orbit-carnival
     spec:
       containers:
-        - name: orbit-test-client
+        - name: orbit-carnival
           image: {{ .Values.image }}
           ports:
             - name: http

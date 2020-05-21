@@ -56,10 +56,10 @@ fun main() {
         val orbitClient = OrbitClient(
             OrbitClientConfig(
                 namespace = "carnival",
-                packages = listOf("orbit.testClient.actors"),
+                packages = listOf("orbit.carnival.actors"),
                 grpcEndpoint = orbitUrl,
-                addressableTTL = Duration.ofSeconds(10),
-                addressableConstructor = RepositoryAddressableConstructor.RepositoryAddressableConstructorSingleton,
+                addressableTTL = Duration.ofSeconds(100),
+                addressableConstructor = KodeinAddressableConstructor.KodeinAddressableConstructorSingleton,
                 containerOverrides = {
                     instance(kodein)
                 }
@@ -103,13 +103,13 @@ fun main() {
             }
         })
 
-        println("Test Client Started")
+        println("The Carnival has started")
     }
 }
 
-class RepositoryAddressableConstructor(private val kodein: Kodein) : AddressableConstructor {
-    object RepositoryAddressableConstructorSingleton : ExternallyConfigured<AddressableConstructor> {
-        override val instanceType = RepositoryAddressableConstructor::class.java
+class KodeinAddressableConstructor(private val kodein: Kodein) : AddressableConstructor {
+    object KodeinAddressableConstructorSingleton : ExternallyConfigured<AddressableConstructor> {
+        override val instanceType = KodeinAddressableConstructor::class.java
     }
 
     override fun constructAddressable(clazz: Class<out Addressable>): Addressable {

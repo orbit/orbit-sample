@@ -1,10 +1,10 @@
 apiVersion: networking.k8s.io/v1beta1
 kind: Ingress
 metadata:
-  name: orbit-test-ingress
+  name: orbit-carnival-ingress
   labels:
-    app: orbit-test
+    app: orbit-carnival
 spec:
   backend:
-    serviceName: orbit-test-client
+    serviceName: orbit-carnival
     servicePort: 8001

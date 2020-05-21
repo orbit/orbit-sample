@@ -27,22 +27,22 @@ class PlayerImpl(private val playerStore: PlayerStore) : AbstractActor(), Player
     fun onActivate(): Deferred<Unit> = GlobalScope.async {
         println("Activating player ${id}")
 
-        load()
+        loadFromStore()
     }
 
     @OnDeactivate
     fun onDeactivate(deactivationReason: DeactivationReason): Deferred<Unit> = GlobalScope.async {
         println("Deactivating player ${id} because ${deactivationReason}")
-        save()
+        saveToStore()
     }
 
-    private suspend fun load() {
+    private suspend fun loadFromStore() {
         val loadedPlayer = playerStore.get(id)
 
         rewards = loadedPlayer?.rewards?.toMutableList() ?: mutableListOf()
     }
 
-    private suspend fun save() {
+    private suspend fun saveToStore() {
         playerStore.put(this.toRecord())
     }
 
@@ -61,7 +61,7 @@ class PlayerImpl(private val playerStore: PlayerStore) : AbstractActor(), Player
 
         println("Player $id played game $gameId. Prize: ${result.reward}")
 
-        save()
+        saveToStore()
 
         return@async result
     }

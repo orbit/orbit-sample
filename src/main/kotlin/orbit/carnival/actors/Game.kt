@@ -33,17 +33,17 @@ class GameImpl(private val gameStore: GameStore) : AbstractActor(), Game {
     @OnActivate
     fun onActivate(): Deferred<Unit> = GlobalScope.async {
         println("Activating game ${id}")
-        load()
+        loadFromStore()
     }
 
     @OnDeactivate
     fun onDeactivate(deactivationReason: DeactivationReason): Deferred<Unit> = GlobalScope.async {
         println("Deactivating game ${id} because ${deactivationReason}")
 
-        save()
+        saveToStore()
     }
 
-    suspend fun load() {
+    suspend fun loadFromStore() {
         gameData = catalog.games.firstOrNull() { game ->
             game.id == (context.reference.key as Key.StringKey).key
         } ?: throw IllegalArgumentException("Game does not exist")
@@ -53,7 +53,7 @@ class GameImpl(private val gameStore: GameStore) : AbstractActor(), Game {
         this.results = savedGame?.results?.toMutableList() ?: mutableListOf()
     }
 
-    suspend fun save() {
+    suspend fun saveToStore() {
         gameStore.put(this.toRecord())
     }
 
@@ -102,7 +102,7 @@ class GameImpl(private val gameStore: GameStore) : AbstractActor(), Game {
 
         results.add(result)
 
-        save()
+        saveToStore()
         return@async result
     }
 
