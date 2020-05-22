@@ -1,0 +1,230 @@
+{
+  "_type": "export",
+  "__export_format": 4,
+  "__export_date": "2020-05-22T19:00:41.319Z",
+  "__export_source": "insomnia.desktop.app:v7.1.1",
+  "resources": [
+    {
+      "_id": "req_6004a2b548794b2aaa5aec8bd993d4b0",
+      "authentication": {},
+      "body": {},
+      "created": 1590173986823,
+      "description": "",
+      "headers": [],
+      "isPrivate": false,
+      "metaSortKey": -1586901503843,
+      "method": "GET",
+      "modified": 1590173997359,
+      "name": "Games",
+      "parameters": [],
+      "parentId": "fld_8f70d3de33fe4fbbbc38aae510792e9a",
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingFollowRedirects": "global",
+      "settingRebuildPath": true,
+      "settingSendCookies": true,
+      "settingStoreCookies": true,
+      "url": "http://localhost:8001/games",
+      "_type": "request"
+    },
+    {
+      "_id": "fld_8f70d3de33fe4fbbbc38aae510792e9a",
+      "created": 1590173986805,
+      "description": "",
+      "environment": {},
+      "environmentPropertyOrder": null,
+      "metaSortKey": -1580333352388,
+      "modified": 1590173986805,
+      "name": "Orbit-Carnival",
+      "parentId": "wrk_143f6e934c7b487588ff5b692b761ad5",
+      "_type": "request_group"
+    },
+    {
+      "_id": "wrk_143f6e934c7b487588ff5b692b761ad5",
+      "created": 1573079854806,
+      "description": "",
+      "modified": 1573079854806,
+      "name": "Insomnia",
+      "parentId": null,
+      "_type": "workspace"
+    },
+    {
+      "_id": "req_d797502b14b74e1facb3d6e8f8a1dc0b",
+      "authentication": {},
+      "body": {},
+      "created": 1590173986831,
+      "description": "",
+      "headers": [],
+      "isPrivate": false,
+      "metaSortKey": -1582796410975.1875,
+      "method": "GET",
+      "modified": 1590174003949,
+      "name": "Game",
+      "parameters": [],
+      "parentId": "fld_8f70d3de33fe4fbbbc38aae510792e9a",
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingFollowRedirects": "global",
+      "settingRebuildPath": true,
+      "settingSendCookies": true,
+      "settingStoreCookies": true,
+      "url": "http://localhost:8001/game/BalloonDarts",
+      "_type": "request"
+    },
+    {
+      "_id": "req_3b56d845cdc741879c8a349854a60399",
+      "authentication": {},
+      "body": {},
+      "created": 1590173986830,
+      "description": "",
+      "headers": [],
+      "isPrivate": false,
+      "metaSortKey": -1578691318107.375,
+      "method": "GET",
+      "modified": 1590174008067,
+      "name": "Player",
+      "parameters": [],
+      "parentId": "fld_8f70d3de33fe4fbbbc38aae510792e9a",
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingFollowRedirects": "global",
+      "settingRebuildPath": true,
+      "settingSendCookies": true,
+      "settingStoreCookies": true,
+      "url": "http://localhost:8001/player/4",
+      "_type": "request"
+    },
+    {
+      "_id": "req_da3740d4cf564e4aa9973d7303162fc8",
+      "authentication": {},
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n\t\"game\": \"BalloonDarts\"\n}"
+      },
+      "created": 1590173986828,
+      "description": "",
+      "headers": [
+        {
+          "id": "pair_b61a370bf11542b294f802f6d1c1678c",
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "isPrivate": false,
+      "metaSortKey": -1577049280960.25,
+      "method": "POST",
+      "modified": 1590174011323,
+      "name": "Play Game",
+      "parameters": [],
+      "parentId": "fld_8f70d3de33fe4fbbbc38aae510792e9a",
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingFollowRedirects": "global",
+      "settingRebuildPath": true,
+      "settingSendCookies": true,
+      "settingStoreCookies": true,
+      "url": "http://localhost:8001/player/4/play",
+      "_type": "request"
+    },
+    {
+      "_id": "req_4cb5f65c78a44e88808a5ea08259cedf",
+      "authentication": {},
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n    \"games\": 5,\n    \"players\": 4,\n    \"count\": 80\n}"
+      },
+      "created": 1590173986833,
+      "description": "",
+      "headers": [
+        {
+          "id": "pair_b61a370bf11542b294f802f6d1c1678c",
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "isPrivate": false,
+      "metaSortKey": -1575407243813.125,
+      "method": "POST",
+      "modified": 1590174014413,
+      "name": "Load Test Games",
+      "parameters": [],
+      "parentId": "fld_8f70d3de33fe4fbbbc38aae510792e9a",
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingFollowRedirects": "global",
+      "settingRebuildPath": true,
+      "settingSendCookies": true,
+      "settingStoreCookies": true,
+      "url": "http://localhost:8001/load/play",
+      "_type": "request"
+    },
+    {
+      "_id": "env_e5f8845b87dcf29aff49e6a5c286ac27f9831e82",
+      "color": null,
+      "created": 1573079854841,
+      "data": {
+        "host": "http://localhost:8001"
+      },
+      "dataPropertyOrder": {
+        "&": [
+          "host"
+        ]
+      },
+      "isPrivate": false,
+      "metaSortKey": 1573079854841,
+      "modified": 1586901545173,
+      "name": "Base Environment",
+      "parentId": "wrk_143f6e934c7b487588ff5b692b761ad5",
+      "_type": "environment"
+    },
+    {
+      "_id": "jar_e5f8845b87dcf29aff49e6a5c286ac27f9831e82",
+      "cookies": [],
+      "created": 1573079854843,
+      "modified": 1573079854843,
+      "name": "Default Jar",
+      "parentId": "wrk_143f6e934c7b487588ff5b692b761ad5",
+      "_type": "cookie_jar"
+    },
+    {
+      "_id": "env_1ed214e2ca2e4f5495cceffe3a06b331",
+      "color": null,
+      "created": 1586901559048,
+      "data": {
+        "host": "http://localhost:8001",
+        "serverHost": "dns:///localhost:50056"
+      },
+      "dataPropertyOrder": {
+        "&": [
+          "host",
+          "serverHost"
+        ]
+      },
+      "isPrivate": false,
+      "metaSortKey": 1586901559048,
+      "modified": 1590165281510,
+      "name": "Local",
+      "parentId": "env_e5f8845b87dcf29aff49e6a5c286ac27f9831e82",
+      "_type": "environment"
+    },
+    {
+      "_id": "env_f131c8c8f0d04978bf1ba9990acc4b4f",
+      "color": null,
+      "created": 1587493071815,
+      "data": {
+        "host": "http://192.168.64.30"
+      },
+      "dataPropertyOrder": {
+        "&": [
+          "host"
+        ]
+      },
+      "isPrivate": false,
+      "metaSortKey": 1586901559098,
+      "modified": 1587595245902,
+      "name": "Kube",
+      "parentId": "env_e5f8845b87dcf29aff49e6a5c286ac27f9831e82",
+      "_type": "environment"
+    }
+  ]
+}

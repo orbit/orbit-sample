@@ -32,7 +32,7 @@ class LoadServer(
                 val games = carnival.getGames()
                 val gameCount = Math.min(body.games, games.count())
 
-                val results = (0..body.count).map { i ->
+                val results = (0..body.count).map { _ ->
                     carnival.playGame(
                         games[Random.nextInt(0, gameCount)].id,
                         Random.nextInt(1, body.players + 1).toString()
@@ -48,6 +48,5 @@ class LoadServer(
 data class LoadPlayRequest(
     val games: Int,
     val players: Int,
-    val affinity: Int,
     val count: Int
 )
