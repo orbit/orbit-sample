@@ -12,17 +12,11 @@ This sample app will install Orbit Server, its depenedencies, and a client appli
 * [Skaffold](https://skaffold.dev) to easily bring up the environment
 * [Insomnia](https://insomnia.rest/) or [Postman](https://www.postman.com/) for testing
 
-### Clone the repository
-
-```shell script
-> git clone git@github.com:orbit/orbit-sample.git
-```
-
 ### Set up Kubernetes environment
 
 #### Minikube
 
-After [installing](https://kubernetes.io/docs/tasks/tools/install-minikube) Minikube, start up a new Minikube instance:
+After [installing](https://kubernetes.io/docs/tasks/tools/install-minikube) Minikube, start up a new Minikube instance.
 ```shell script
 > minikube start
 ``` 
@@ -44,7 +38,7 @@ With Docker for Desktop running, open settings and enable Kubernetes.
 * [Windows](https://docs.docker.com/docker-for-windows/kubernetes/)
 
 ### Kubectl Context and Namespace
-We want to assure all the further commands are happening in the right Kubernetes cluster and isolate the project using a namespace. Tp use Docker For Desktop, replace `minikube` with `docker-desktop`
+We want to assure all the further commands are happening in the right Kubernetes cluster and isolate the project using a namespace. Tp use Docker For Desktop, replace `minikube` with `docker-desktop`.
 
 ```shell script
 > kubectl config use-context minikube
@@ -55,13 +49,19 @@ namespace/orbit-carnival created
 Context "minikube" modified.
 ```
 
-Verify the orbit-carnival namespace is selected in the right context:
+Verify the orbit-carnival namespace is selected in the right context.
 ```shell script
 > kubectl config get-contexts
 CURRENT   NAME                        CLUSTER                     AUTHINFO                    NAMESPACE
           docker-desktop              docker-desktop              docker-desktop              
           docker-for-desktop          docker-desktop              docker-desktop              
 *         minikube                    minikube                    minikube                    orbit-carnival
+```
+
+### Clone the repository
+
+```shell script
+> git clone git@github.com:orbit/orbit-sample.git
 ```
 
 ### Run Skaffold
@@ -82,7 +82,7 @@ orbit-server-78fb97dd58-lx466                  1/1     Running   0          59s
 ```
 
 Fun tip: Use the [`watch`](https://www.geeksforgeeks.org/watch-command-in-linux-with-examples/
-) command to keep a live view of running containers:
+) command to keep a live view of running containers.
 ```shell script
 > watch kubectl get pod
 ```
@@ -105,7 +105,7 @@ One more endpoint exists for load testing by continuously playing games:
 |---|---|---
 | POST | /load/play | ex. { "games": 5, "players": 4, "count": 800 }
 
-To help more easily test the endpoints, you can drive it through a REST request application like Insomnia or Postman. These are some collections to get you started:
+To help more easily test the endpoints, you can drive it through a REST request application like Insomnia or Postman. These are some collections to get you started.
 * Insomnia [collection](https://github.com/orbit/orbit-sample/blob/master/Orbit-Carnival.insomnia_collection.json)
 * Postman [collection](https://github.com/orbit/orbit-sample/blob/master/Orbit-Carnival.postman_collection.json)
 
