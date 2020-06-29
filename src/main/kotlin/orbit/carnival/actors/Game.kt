@@ -3,22 +3,19 @@ package orbit.carnival.actors
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory
 import com.fasterxml.jackson.module.kotlin.readValue
-import kotlinx.coroutines.Deferred
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.async
+import orbit.carnival.actors.repository.GameStore
+import orbit.carnival.actors.repository.toRecord
 import orbit.client.actor.AbstractActor
 import orbit.client.actor.ActorWithStringKey
 import orbit.client.addressable.DeactivationReason
 import orbit.client.addressable.OnActivate
 import orbit.client.addressable.OnDeactivate
 import orbit.shared.addressable.Key
-import orbit.carnival.actors.repository.GameStore
-import orbit.carnival.actors.repository.toRecord
 import kotlin.random.Random
 
 interface Game : ActorWithStringKey {
-    fun play(playerId: String): Deferred<PlayedGameResult>
-    fun loadData(): Deferred<GameData>
+    suspend fun play(playerId: String): PlayedGameResult
+    suspend fun loadData(): GameData
 }
 
 class GameImpl(private val gameStore: GameStore) : AbstractActor(), Game {
@@ -31,13 +28,14 @@ class GameImpl(private val gameStore: GameStore) : AbstractActor(), Game {
     internal var results = mutableListOf<PlayedGameResult>()
 
     @OnActivate
-    fun onActivate(): Deferred<Unit> = GlobalScope.async {
+    suspend fun onActivate() {
         println("Activating game ${id}")
+
         loadFromStore()
     }
 
     @OnDeactivate
-    fun onDeactivate(deactivationReason: DeactivationReason): Deferred<Unit> = GlobalScope.async {
+    suspend fun onDeactivate(deactivationReason: DeactivationReason) {
         println("Deactivating game ${id} because ${deactivationReason}")
 
         saveToStore()
@@ -67,7 +65,7 @@ class GameImpl(private val gameStore: GameStore) : AbstractActor(), Game {
         }
     }
 
-    override fun play(playerId: String): Deferred<PlayedGameResult> = GlobalScope.async {
+    override suspend fun play(playerId: String): PlayedGameResult {
 
         val previousResult = results.lastOrNull()
         val replay = previousResult?.playerId == playerId && previousResult.level < 4
@@ -103,12 +101,12 @@ class GameImpl(private val gameStore: GameStore) : AbstractActor(), Game {
         results.add(result)
 
         saveToStore()
-        return@async result
+        return result
     }
 
 
-    override fun loadData(): Deferred<GameData> = GlobalScope.async {
-        GameData(
+    override suspend fun loadData(): GameData {
+        return GameData(
             name = gameData.name,
             timesPlayed = results.count()
         )

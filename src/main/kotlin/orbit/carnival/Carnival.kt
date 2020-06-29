@@ -1,19 +1,19 @@
 package orbit.carnival
 
+import orbit.carnival.actors.*
 import orbit.client.OrbitClient
 import orbit.client.actor.createProxy
-import orbit.carnival.actors.*
 
 class Carnival(val orbit: OrbitClient) {
     suspend fun playGame(gameId: String, playerId: String): PlayedGameResult {
         val player = orbit.actorFactory.createProxy<Player>(playerId)
 
-        return player.playGame(gameId).await()
+        return player.playGame(gameId)
     }
 
     suspend fun getPlayer(playerId: String): PlayerResult {
         val player = orbit.actorFactory.createProxy<Player>(playerId)
-        val playerDataResult = player.getData().await()
+        val playerDataResult = player.getData()
 
         return PlayerResult(
             playerId = playerId,
@@ -23,7 +23,7 @@ class Carnival(val orbit: OrbitClient) {
 
     suspend fun getGame(gameId: String): GameResult {
         val game = orbit.actorFactory.createProxy<Game>(gameId)
-        val gameData = game.loadData().await()
+        val gameData = game.loadData()
         return GameResult(
             gameId = gameId,
             name = gameData.name,
