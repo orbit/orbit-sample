@@ -18,6 +18,10 @@ orbit:
   node:
     replicas: 1
     containerPort: 50056
+    service:
+      annotations:
+        prometheus.io/scrape: 'true'
+        prometheus.io/port: '9090'
   addressableDirectory:
     replicas: 1
   nodeDirectory:

@@ -15,7 +15,7 @@ deploy:
       chartPath: charts/orbit-carnival
       skipBuildDependencies: true
       setValues:
-        enabled: true
         url: orbit-carnival
+        orbit.enabled: true
       values:
         image: orbit-carnival
