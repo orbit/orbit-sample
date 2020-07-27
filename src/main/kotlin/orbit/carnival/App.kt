@@ -98,7 +98,7 @@ fun main() {
         Runtime.getRuntime().addShutdownHook(object : Thread() {
             override fun run() = runBlocking {
                 println("Gracefully shutting down")
-                orbitClient.stop().join()
+                orbitClient.stop()
                 println("Shutdown complete")
             }
         })

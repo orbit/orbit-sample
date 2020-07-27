@@ -32,13 +32,26 @@ class LoadServer(
                 val games = carnival.getGames()
                 val gameCount = Math.min(body.games, games.count())
 
+                val failures = mutableListOf<String>()
                 val results = (0..body.count).map { _ ->
-                    carnival.playGame(
-                        games[Random.nextInt(0, gameCount)].id,
-                        Random.nextInt(1, body.players + 1).toString()
-                    )
+
+                        val gameId = games[Random.nextInt(0, gameCount)].id
+                        val playerId = Random.nextInt(1, body.players + 1).toString()
+                    try {
+                        carnival.playGame(
+                            gameId,
+                            playerId
+                        )
+                    }
+                    catch (e: Throwable) {
+                        val failure = "Failure Game($gameId): Player $playerId: \n${e.message}"
+                        println(failure)
+                        failures.add(failure)
+                    }
                 }
 
+                println("--- Load test complete ---")
+                println(failures.joinToString("\n"))
                 call.respond(results)
             }
         }

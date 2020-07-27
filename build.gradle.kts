@@ -10,10 +10,11 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 val kotlinCoroutinesVersion by extra("1.3.5")
 val ktorVersion by extra("1.3.2")
 val jacksonVersion by extra("2.10.3")
-val orbitVersion by extra("2.0.0-alpha.81")
+val orbitVersion by extra("2.0.0-alpha.84")
 val grpcVersion by extra("1.28.1")
 val jetcdVersion by extra("0.5.0")
 val kodeinVersion by extra("6.5.5")
+val slf4jVersion by extra("1.7.28")
 
 val mainClass = "orbit.carnival.AppKt"
 
@@ -30,28 +31,28 @@ repositories {
 }
 
 dependencies {
-    "implementation"(kotlin("stdlib-jdk8"))
+    implementation(kotlin("stdlib-jdk8"))
 
-    "implementation"("org.jetbrains.kotlinx:kotlinx-coroutines-core:$kotlinCoroutinesVersion")
-    "implementation"("org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:$kotlinCoroutinesVersion")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$kotlinCoroutinesVersion")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:$kotlinCoroutinesVersion")
 
-    "implementation"("io.ktor:ktor-server-core:$ktorVersion")
-    "implementation"("io.ktor:ktor-server-netty:$ktorVersion")
-    "implementation"("io.ktor:ktor-gson:$ktorVersion")
-    "implementation"("io.ktor:ktor-jackson:$ktorVersion")
-    "implementation"("io.ktor:ktor-serialization:$ktorVersion")
-    "implementation"("com.fasterxml.jackson.datatype:jackson-datatype-jsr310:$jacksonVersion")
-    "implementation"("com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:$jacksonVersion")
+    implementation("io.ktor:ktor-server-core:$ktorVersion")
+    implementation("io.ktor:ktor-server-netty:$ktorVersion")
+    implementation("io.ktor:ktor-gson:$ktorVersion")
+    implementation("io.ktor:ktor-jackson:$ktorVersion")
+    implementation("io.ktor:ktor-serialization:$ktorVersion")
+    implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310:$jacksonVersion")
+    implementation("com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:$jacksonVersion")
 
-    "implementation"("cloud.orbit:orbit-client:$orbitVersion")
+    implementation("cloud.orbit:orbit-client:$orbitVersion")
 
-    "implementation"("io.grpc:grpc-netty-shaded:$grpcVersion")
-    "implementation"("io.grpc:grpc-protobuf:$grpcVersion")
-    "implementation"("io.grpc:grpc-stub:$grpcVersion")
+    implementation("io.grpc:grpc-netty-shaded:$grpcVersion")
+    implementation("io.grpc:grpc-protobuf:$grpcVersion")
+    implementation("io.grpc:grpc-stub:$grpcVersion")
 
-    "implementation"("io.etcd:jetcd-all:$jetcdVersion")
-    "implementation"("org.kodein.di:kodein-di-generic-jvm:$kodeinVersion")
-
+    implementation("io.etcd:jetcd-all:$jetcdVersion")
+    implementation("org.kodein.di:kodein-di-generic-jvm:$kodeinVersion")
+    implementation("org.slf4j:slf4j-simple:$slf4jVersion")
 }
 
 tasks.withType<KotlinJvmCompile> {
