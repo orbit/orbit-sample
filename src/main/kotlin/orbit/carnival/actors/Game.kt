@@ -29,15 +29,11 @@ class GameImpl(private val gameStore: GameStore) : AbstractActor(), Game {
 
     @OnActivate
     suspend fun onActivate() {
-        println("Activating game ${id}")
-
         loadFromStore()
     }
 
     @OnDeactivate
     suspend fun onDeactivate(deactivationReason: DeactivationReason) {
-        println("Deactivating game ${id} because ${deactivationReason}")
-
         saveToStore()
     }
 

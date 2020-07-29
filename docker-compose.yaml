@@ -15,7 +15,7 @@ services:
       - ./build/libs/orbit-carnival-release.jar:/opt/orbitCarnival/libs/orbit-carnival.jar
 
   orbit-server:
-    image: orbitframework/orbit:2.0.0-alpha.84
+    image: orbitframework/orbit:2.0.0-alpha.85
     ports:
       - "5006:5005"
       - "50056:50056"

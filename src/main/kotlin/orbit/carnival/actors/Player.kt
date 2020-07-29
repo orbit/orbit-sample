@@ -22,14 +22,11 @@ class PlayerImpl(private val playerStore: PlayerStore) : AbstractActor(), Player
 
     @OnActivate
     suspend fun onActivate() {
-        println("Activating player ${id}")
-
         loadFromStore()
     }
 
     @OnDeactivate
     suspend fun onDeactivate(deactivationReason: DeactivationReason) {
-        println("Deactivating player ${id} because ${deactivationReason}")
         saveToStore()
     }
 
@@ -55,8 +52,6 @@ class PlayerImpl(private val playerStore: PlayerStore) : AbstractActor(), Player
         if (result.winner) {
             this@PlayerImpl.rewards.add(result.reward)
         }
-
-        println("Player $id played game $gameId. Prize: ${result.reward}")
 
         saveToStore()
 

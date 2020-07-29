@@ -12,46 +12,49 @@ import io.ktor.request.receive
 import io.ktor.response.respond
 import io.ktor.routing.post
 import io.ktor.routing.routing
+import java.time.Duration
+import java.time.Instant
 import kotlin.random.Random
 
 class LoadServer(
     carnival: Carnival,
     application: Application
 ) {
+    private var testInProgress = false
+
     init {
         application.routing {
             post("/load/play") {
-
-                // TODO: Make a more correct game. Use affinity, skip concurrency, multiple instances of games
-                //
-
+                val startTime = Instant.now()
                 val body = call.receive<LoadPlayRequest>()
-
+                if (!body.concurrent && testInProgress) {
+                    call.respond("Test in progress")
+                    return@post
+                }
                 println("Starting load test: ${body.games} games - ${body.players} players - ${body.count} times")
-
+                testInProgress = true
                 val games = carnival.getGames()
                 val gameCount = Math.min(body.games, games.count())
 
                 val failures = mutableListOf<String>()
                 val results = (0..body.count).map { _ ->
-
-                        val gameId = games[Random.nextInt(0, gameCount)].id
-                        val playerId = Random.nextInt(1, body.players + 1).toString()
+                    val gameId = games[Random.nextInt(0, gameCount)].id
+                    val playerId = Random.nextInt(1, body.players + 1).toString()
                     try {
                         carnival.playGame(
                             gameId,
                             playerId
                         )
-                    }
-                    catch (e: Throwable) {
+                    } catch (e: Throwable) {
                         val failure = "Failure Game($gameId): Player $playerId: \n${e.message}"
                         println(failure)
                         failures.add(failure)
                     }
                 }
 
-                println("--- Load test complete ---")
+                println("--- Load test complete in ${Duration.between(Instant.now(), startTime).seconds} seconds ---")
                 println(failures.joinToString("\n"))
+                testInProgress = false
                 call.respond(results)
             }
         }
@@ -61,5 +64,6 @@ class LoadServer(
 data class LoadPlayRequest(
     val games: Int,
     val players: Int,
-    val count: Int
+    val count: Int,
+    val concurrent: Boolean = true
 )
