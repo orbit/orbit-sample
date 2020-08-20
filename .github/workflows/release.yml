@@ -27,7 +27,7 @@ jobs:
       - name: Build and Publish Docker image to Github
         uses: docker/build-push-action@v1
         with:
-          username: orbit
+          username: orbit-sample
           password: ${{ secrets.GITHUB_TOKEN }}
           repository: docker.pkg.github.com/orbit/orbit-sample
           tags: latest
