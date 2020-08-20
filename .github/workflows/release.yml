@@ -23,17 +23,10 @@ jobs:
           java-version: 11
       - name: Build Artifacts
         run: ./gradlew build fatJar
-      - name: Build and Publish Docker image to Github
+      - name: Build and Publish Docker image to Dockerhub
         uses: docker/build-push-action@v1
         with:
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
-          repository: docker.pkg.github.com/orbit/orbit-sample
+          username: ${{ secrets.DOCKER_HUB_USERNAME }}
+          password: ${{ secrets.DOCKER_HUB_PASSWORD }}
+          repository: orbitframework
           tags: latest
-#      - name: Build and Publish Docker image to Dockerhub
-#        uses: docker/build-push-action@v1
-#        with:
-#          username: ${{ secrets.DOCKER_HUB_USERNAME }}
-#          password: ${{ secrets.DOCKER_HUB_PASSWORD }}
-#          repository: orbitframework
-#          tags: latest
