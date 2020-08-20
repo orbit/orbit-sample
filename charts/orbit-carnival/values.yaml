@@ -11,6 +11,9 @@ orbitUrl: "dns:///orbit:50056/"
 
 resources: {}
 
+meters:
+  enabled: true
+
 orbit:
   enabled: true
   url: localhost

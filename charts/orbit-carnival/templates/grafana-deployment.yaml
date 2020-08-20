@@ -1,3 +1,4 @@
+{{- if .Values.metrics.enabled }}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -40,3 +41,4 @@ spec:
           configMap:
             defaultMode: 420
             name: grafana-datasources
+  {{- end }}
