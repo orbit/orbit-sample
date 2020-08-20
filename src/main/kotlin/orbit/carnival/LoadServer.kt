@@ -39,7 +39,7 @@ class LoadServer(
                 val failures = mutableListOf<String>()
                 val results = (0..body.count).map { _ ->
                     val gameId = games[Random.nextInt(0, gameCount)].id
-                    val playerId = Random.nextInt(1, body.players + 1).toString()
+                    val playerId = "slow-${Random.nextInt(1, body.players + 1)}"
                     try {
                         carnival.playGame(
                             gameId,
@@ -49,13 +49,17 @@ class LoadServer(
                         val failure = "Failure Game($gameId): Player $playerId: \n${e.message}"
                         println(failure)
                         failures.add(failure)
+                        null
                     }
-                }
+                }.filterNotNull()
 
                 println("--- Load test complete in ${Duration.between(Instant.now(), startTime).seconds} seconds ---")
                 println(failures.joinToString("\n"))
                 testInProgress = false
-                call.respond(results)
+                call.respond(object {
+                    var gamesPlayed = results.count()
+                    var winners = results.count { r -> r.winner }
+                })
             }
         }
     }

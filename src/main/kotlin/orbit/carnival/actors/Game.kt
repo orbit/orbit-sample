@@ -3,6 +3,7 @@ package orbit.carnival.actors
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory
 import com.fasterxml.jackson.module.kotlin.readValue
+import kotlinx.coroutines.delay
 import orbit.carnival.actors.repository.GameStore
 import orbit.carnival.actors.repository.toRecord
 import orbit.client.actor.AbstractActor
@@ -63,6 +64,9 @@ class GameImpl(private val gameStore: GameStore) : AbstractActor(), Game {
 
     override suspend fun play(playerId: String): PlayedGameResult {
 
+        if (playerId.startsWith("slow")) {
+            delay(500)
+        }
         val previousResult = results.lastOrNull()
         val replay = previousResult?.playerId == playerId && previousResult.level < 4
         var level = if (replay) previousResult!!.level else 0

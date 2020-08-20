@@ -1,0 +1,40 @@
+name: Release Orbit
+
+on:
+  workflow_dispatch
+
+jobs:
+  build:
+    name: Publish Docker Image
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Sync Repository
+        uses: actions/checkout@v2
+        with:
+          ref: master
+          submodules: true
+      - name: Set git credentials
+        run: |
+          git config --global user.email "orbit@ea.com"
+          git config --global user.name "orbit_tools"
+      - name: Set up JDK
+        uses: actions/setup-java@v1
+        with:
+          java-version: 11
+      - name: Build Artifacts
+        run: ./gradlew build fatJar
+      - name: Build and Publish Docker image to Github
+        uses: docker/build-push-action@v1
+        with:
+          username: orbit
+          password: ${{ secrets.GITHUB_TOKEN }}
+          repository: docker.pkg.github.com/orbit/orbit-sample
+          tags: latest
+#      - name: Build and Publish Docker image to Dockerhub
+#        uses: docker/build-push-action@v1
+#        with:
+#          username: ${{ secrets.DOCKER_HUB_USERNAME }}
+#          password: ${{ secrets.DOCKER_HUB_PASSWORD }}
+#          repository: orbitframework
+#          tags: latest
