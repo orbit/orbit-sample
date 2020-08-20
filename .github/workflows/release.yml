@@ -28,6 +28,6 @@ jobs:
         with:
           username: ${{ secrets.DOCKER_HUB_USERNAME }}
           password: ${{ secrets.DOCKER_HUB_PASSWORD }}
-          repository: orbitframework
+          repository: orbitframework/orbit-sample
           dockerfile: ./docker/Dockerfile
           tags: latest
