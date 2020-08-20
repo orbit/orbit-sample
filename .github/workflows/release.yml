@@ -1,4 +1,4 @@
-name: Release Orbit
+name: Release Orbit Carnival Sample
 
 on:
   workflow_dispatch
