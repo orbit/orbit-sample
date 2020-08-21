@@ -6,7 +6,7 @@ imagePullSecrets: []
 nameOverride: ""
 fullnameOverride: ""
 
-image: ""
+image: "orbitframework/orbit-sample"
 orbitUrl: "dns:///orbit:50056/"
 
 resources: {}

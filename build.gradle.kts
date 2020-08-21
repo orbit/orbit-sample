@@ -19,7 +19,7 @@ val slf4jVersion by extra("1.7.28")
 val mainClass = "orbit.carnival.AppKt"
 
 plugins {
-    val kotlinVersion = "1.3.72"
+    val kotlinVersion = "1.4.0"
 
     base
     kotlin("jvm") version kotlinVersion

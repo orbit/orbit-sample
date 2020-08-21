@@ -1,5 +1,6 @@
 package orbit.carnival.actors
 
+import kotlinx.coroutines.delay
 import orbit.carnival.actors.repository.PlayerStore
 import orbit.carnival.actors.repository.toRecord
 import orbit.client.actor.AbstractActor
@@ -9,10 +10,14 @@ import orbit.client.addressable.DeactivationReason
 import orbit.client.addressable.OnActivate
 import orbit.client.addressable.OnDeactivate
 import orbit.shared.addressable.Key
+import kotlin.time.Duration
+import kotlin.time.ExperimentalTime
+import kotlin.time.seconds
 
 interface Player : ActorWithStringKey {
     suspend fun getData(): PlayerData
-    suspend fun playGame(gameId: String): PlayedGameResult
+    @ExperimentalTime
+    suspend fun playGame(gameId: String, gameTime: Duration = 0.seconds): PlayedGameResult
 }
 
 class PlayerImpl(private val playerStore: PlayerStore) : AbstractActor(), Player {
@@ -44,11 +49,12 @@ class PlayerImpl(private val playerStore: PlayerStore) : AbstractActor(), Player
         return PlayerData(rewards = rewards)
     }
 
-    override suspend fun playGame(gameId: String): PlayedGameResult {
+    @ExperimentalTime
+    override suspend fun playGame(gameId: String, gameTime: Duration): PlayedGameResult {
         val playerId = (context.reference.key as Key.StringKey).key
         val game = context.client.actorFactory.createProxy<Game>(gameId)
 
-        val result = game.play(playerId)
+        val result = game.play(playerId, gameTime)
         if (result.winner) {
             this@PlayerImpl.rewards.add(result.reward)
         }

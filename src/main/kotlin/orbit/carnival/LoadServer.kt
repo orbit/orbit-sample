@@ -15,7 +15,10 @@ import io.ktor.routing.routing
 import java.time.Duration
 import java.time.Instant
 import kotlin.random.Random
+import kotlin.time.ExperimentalTime
+import kotlin.time.milliseconds
 
+@ExperimentalTime
 class LoadServer(
     carnival: Carnival,
     application: Application
@@ -39,11 +42,12 @@ class LoadServer(
                 val failures = mutableListOf<String>()
                 val results = (0..body.count).map { _ ->
                     val gameId = games[Random.nextInt(0, gameCount)].id
-                    val playerId = "slow-${Random.nextInt(1, body.players + 1)}"
+                    val playerId = "${Random.nextInt(1, body.players + 1)}"
                     try {
                         carnival.playGame(
                             gameId,
-                            playerId
+                            playerId,
+                            body.gameTimeMs.milliseconds
                         )
                     } catch (e: Throwable) {
                         val failure = "Failure Game($gameId): Player $playerId: \n${e.message}"
@@ -69,5 +73,6 @@ data class LoadPlayRequest(
     val games: Int,
     val players: Int,
     val count: Int,
-    val concurrent: Boolean = true
+    val concurrent: Boolean = true,
+    val gameTimeMs: Int = 0
 )

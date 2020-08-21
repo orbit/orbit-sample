@@ -17,7 +17,9 @@ import io.ktor.routing.get
 import io.ktor.routing.post
 import io.ktor.routing.routing
 import orbit.carnival.actors.GameImpl
+import kotlin.time.ExperimentalTime
 
+@ExperimentalTime
 class Server(
     carnival: Carnival,
     application: Application

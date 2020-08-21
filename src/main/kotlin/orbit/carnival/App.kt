@@ -40,7 +40,9 @@ import org.kodein.di.generic.provider
 import org.kodein.di.generic.singleton
 import java.text.DateFormat
 import java.time.Duration
+import kotlin.time.ExperimentalTime
 
+@ExperimentalTime
 fun main() {
     runBlocking {
         val storeUrl = System.getenv("STORE_URL")
