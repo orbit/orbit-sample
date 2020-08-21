@@ -55,7 +55,7 @@ class Server(
                 val gameId = body.game
                 println("Player ${playerId} playing game: ${gameId}")
 
-                val result = carnival.playGame(gameId, playerId)
+                val result = carnival.playGame(gameId, playerId, body.gameTimeMs)
 
                 call.respond(result)
             }
@@ -65,5 +65,6 @@ class Server(
 
 
 data class PlayGameRequest(
-    val game: String
+    val game: String,
+    val gameTimeMs: Long
 )

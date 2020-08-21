@@ -45,7 +45,7 @@ class PlayerImpl(private val playerStore: PlayerStore) : AbstractActor(), Player
     }
 
     override suspend fun playGame(gameId: String, gameTimeMs: Long): PlayedGameResult {
-        val playerId = (context.reference.key as Key.StringKey).key
+        val playerId = id
         val game = context.client.actorFactory.createProxy<Game>(gameId)
 
         val result = game.play(playerId, gameTimeMs)
