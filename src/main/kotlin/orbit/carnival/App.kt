@@ -59,7 +59,8 @@ fun main() {
                 addressableConstructor = KodeinAddressableConstructor.KodeinAddressableConstructorSingleton,
                 containerOverrides = {
                     instance(kodein)
-                }
+                },
+                railCount = 512
             )
         )
 
