@@ -21,7 +21,7 @@ interface Game : ActorWithStringKey {
 
 class GameImpl(private val gameStore: GameStore) : AbstractActor(), Game {
     val id: String get() = (this.context.reference.key as Key.StringKey).key
-
+    val gameId: String get() = id.split("-")[0]
     private lateinit var gameData: Catalog.Game
 
     private val baseWinningOdds = .5
@@ -40,7 +40,7 @@ class GameImpl(private val gameStore: GameStore) : AbstractActor(), Game {
 
     suspend fun loadFromStore() {
         gameData = catalog.games.firstOrNull() { game ->
-            game.id == (context.reference.key as Key.StringKey).key
+            game.id == gameId
         } ?: throw IllegalArgumentException("Game does not exist")
 
         val savedGame = gameStore.get(id)
