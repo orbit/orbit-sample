@@ -6,19 +6,14 @@
 
 package orbit.carnival
 
-import io.ktor.application.Application
-import io.ktor.application.call
-import io.ktor.request.receive
-import io.ktor.response.respond
-import io.ktor.routing.post
-import io.ktor.routing.routing
+import io.ktor.application.*
+import io.ktor.request.*
+import io.ktor.response.*
+import io.ktor.routing.*
 import java.time.Duration
 import java.time.Instant
 import kotlin.random.Random
-import kotlin.time.ExperimentalTime
-import kotlin.time.milliseconds
 
-@ExperimentalTime
 class LoadServer(
     carnival: Carnival,
     application: Application
@@ -47,7 +42,7 @@ class LoadServer(
                         carnival.playGame(
                             gameId,
                             playerId,
-                            body.gameTimeMs.milliseconds
+                            body.gameTimeMs
                         )
                     } catch (e: Throwable) {
                         val failure = "Failure Game($gameId): Player $playerId: \n${e.message}"
@@ -74,5 +69,5 @@ data class LoadPlayRequest(
     val players: Int,
     val count: Int,
     val concurrent: Boolean = true,
-    val gameTimeMs: Int = 0
+    val gameTimeMs: Long = 0
 )

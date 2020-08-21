@@ -7,21 +7,14 @@
 package orbit.carnival
 
 import com.fasterxml.jackson.databind.SerializationFeature
-import io.ktor.application.call
-import io.ktor.application.install
-import io.ktor.features.ContentNegotiation
-import io.ktor.features.DefaultHeaders
-import io.ktor.features.StatusPages
-import io.ktor.http.HttpStatusCode
-import io.ktor.jackson.jackson
-import io.ktor.response.respond
-import io.ktor.server.engine.embeddedServer
-import io.ktor.server.netty.Netty
+import io.ktor.application.*
+import io.ktor.features.*
+import io.ktor.http.*
+import io.ktor.jackson.*
+import io.ktor.response.*
+import io.ktor.server.engine.*
+import io.ktor.server.netty.*
 import kotlinx.coroutines.runBlocking
-import orbit.client.OrbitClient
-import orbit.client.OrbitClientConfig
-import orbit.client.addressable.Addressable
-import orbit.client.addressable.AddressableConstructor
 import orbit.carnival.actors.GameImpl
 import orbit.carnival.actors.PlayerImpl
 import orbit.carnival.actors.repository.GameStore
@@ -30,6 +23,10 @@ import orbit.carnival.actors.repository.etcd.EtcdGameStore
 import orbit.carnival.actors.repository.etcd.EtcdPlayerStore
 import orbit.carnival.actors.repository.local.LocalGameStore
 import orbit.carnival.actors.repository.local.LocalPlayerStore
+import orbit.client.OrbitClient
+import orbit.client.OrbitClientConfig
+import orbit.client.addressable.Addressable
+import orbit.client.addressable.AddressableConstructor
 import orbit.util.di.ExternallyConfigured
 import org.kodein.di.Instance
 import org.kodein.di.Kodein
@@ -40,9 +37,7 @@ import org.kodein.di.generic.provider
 import org.kodein.di.generic.singleton
 import java.text.DateFormat
 import java.time.Duration
-import kotlin.time.ExperimentalTime
 
-@ExperimentalTime
 fun main() {
     runBlocking {
         val storeUrl = System.getenv("STORE_URL")
@@ -60,7 +55,7 @@ fun main() {
                 namespace = "carnival",
                 packages = listOf("orbit.carnival.actors"),
                 grpcEndpoint = orbitUrl,
-                addressableTTL = Duration.ofSeconds(100),
+                addressableTTL = Duration.ofSeconds(6000),
                 addressableConstructor = KodeinAddressableConstructor.KodeinAddressableConstructorSingleton,
                 containerOverrides = {
                     instance(kodein)

@@ -13,12 +13,9 @@ import orbit.client.addressable.OnActivate
 import orbit.client.addressable.OnDeactivate
 import orbit.shared.addressable.Key
 import kotlin.random.Random
-import kotlin.time.Duration
-import kotlin.time.ExperimentalTime
 
 interface Game : ActorWithStringKey {
-    @ExperimentalTime
-    suspend fun play(playerId: String, gameTime: Duration): PlayedGameResult
+    suspend fun play(playerId: String, gameTimeMs: Long): PlayedGameResult
     suspend fun loadData(): GameData
 }
 
@@ -65,9 +62,8 @@ class GameImpl(private val gameStore: GameStore) : AbstractActor(), Game {
         }
     }
 
-    @ExperimentalTime
-    override suspend fun play(playerId: String, gameTime: Duration): PlayedGameResult {
-        delay(gameTime.toLongMilliseconds())
+    override suspend fun play(playerId: String, gameTimeMs: Long): PlayedGameResult {
+        delay(gameTimeMs)
 
         val previousResult = results.lastOrNull()
         val replay = previousResult?.playerId == playerId && previousResult.level < 4

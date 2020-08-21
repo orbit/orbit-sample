@@ -3,16 +3,12 @@ package orbit.carnival
 import orbit.carnival.actors.*
 import orbit.client.OrbitClient
 import orbit.client.actor.createProxy
-import kotlin.time.Duration
-import kotlin.time.ExperimentalTime
-import kotlin.time.seconds
 
 class Carnival(val orbit: OrbitClient) {
-    @ExperimentalTime
-    suspend fun playGame(gameId: String, playerId: String, gameTime: Duration = 0.seconds): PlayedGameResult {
+    suspend fun playGame(gameId: String, playerId: String, gameTimeMs: Long = 0): PlayedGameResult {
         val player = orbit.actorFactory.createProxy<Player>(playerId)
 
-        return player.playGame(gameId, gameTime)
+        return player.playGame(gameId, gameTimeMs)
     }
 
     suspend fun getPlayer(playerId: String): PlayerResult {
