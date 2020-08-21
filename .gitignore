@@ -48,3 +48,6 @@ thumbs.db
 Desktop.ini
 $RECYCLE.BIN/
 charts/orbit-carnival/charts
+
+#IDEA
+.idea/

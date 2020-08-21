@@ -1,5 +1,6 @@
 package orbit.carnival.actors
 
+import com.github.ssedano.hash.JumpConsistentHash
 import orbit.carnival.actors.repository.PlayerStore
 import orbit.carnival.actors.repository.toRecord
 import orbit.client.actor.AbstractActor
@@ -9,6 +10,7 @@ import orbit.client.addressable.DeactivationReason
 import orbit.client.addressable.OnActivate
 import orbit.client.addressable.OnDeactivate
 import orbit.shared.addressable.Key
+
 
 interface Player : ActorWithStringKey {
     suspend fun getData(): PlayerData
@@ -46,7 +48,8 @@ class PlayerImpl(private val playerStore: PlayerStore) : AbstractActor(), Player
 
     override suspend fun playGame(gameId: String, gameTimeMs: Long): PlayedGameResult {
         val playerId = id
-        val game = context.client.actorFactory.createProxy<Game>(gameId)
+        val jumpConsistentHash = JumpConsistentHash.jumpConsistentHash(playerId, 1000)
+        val game = context.client.actorFactory.createProxy<Game>("$gameId-$jumpConsistentHash")
 
         val result = game.play(playerId, gameTimeMs)
         if (result.winner) {

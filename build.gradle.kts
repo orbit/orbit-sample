@@ -15,6 +15,7 @@ val grpcVersion by extra("1.28.1")
 val jetcdVersion by extra("0.5.0")
 val kodeinVersion by extra("6.5.5")
 val slf4jVersion by extra("1.7.28")
+val jumpConsistentHashVersion by extra("1.0.0")
 
 val mainClass = "orbit.carnival.AppKt"
 
@@ -54,6 +55,8 @@ dependencies {
     implementation("io.etcd:jetcd-all:$jetcdVersion")
     implementation("org.kodein.di:kodein-di-generic-jvm:$kodeinVersion")
     implementation("org.slf4j:slf4j-simple:$slf4jVersion")
+    implementation("com.github.ssedano:jump-consistent-hash:$jumpConsistentHashVersion")
+
 }
 
 tasks.withType<KotlinJvmCompile> {
