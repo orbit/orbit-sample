@@ -17,7 +17,7 @@ import kotlin.time.seconds
 interface Player : ActorWithStringKey {
     suspend fun getData(): PlayerData
     @ExperimentalTime
-    suspend fun playGame(gameId: String, gameTime: Duration = 0.seconds): PlayedGameResult
+    suspend fun playGame(gameId: String, gameTime: Duration): PlayedGameResult
 }
 
 class PlayerImpl(private val playerStore: PlayerStore) : AbstractActor(), Player {
