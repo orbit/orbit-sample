@@ -32,7 +32,7 @@ kubeconfig: Configured
 ```
 
 #### Docker for Desktop
-With Docker for Desktop running, open settings and enable Kubernetes.
+With [Docker](https://www.scaler.com/topics/what-is-docker/) for Desktop running, open settings and enable Kubernetes.
 
 * [Mac](https://docs.docker.com/docker-for-mac/kubernetes/)
 * [Windows](https://docs.docker.com/docker-for-windows/kubernetes/)
